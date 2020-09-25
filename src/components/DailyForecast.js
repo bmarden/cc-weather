@@ -5,10 +5,10 @@ import Search from './Search';
 const DailyForecast = () => {
   return (
     <Jumbotron>
-      <h1>
-        CC Weather
+      <h1>CC Weather</h1>
+      <div>
         <Search onChange={() => null} />
-      </h1>
+      </div>
       <div className="media"></div>
     </Jumbotron>
   );
