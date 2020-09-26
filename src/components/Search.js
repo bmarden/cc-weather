@@ -1,67 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-let autoComplete;
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import Button from 'react-bootstrap/Button';
 
 const KEY = 'AIzaSyCjQg02of0xlwfpvo4v-GQZ7VxSaNRHBLM';
 
-const loadScript = (url, callback) => {
-  let script = document.createElement('script');
-  script.type = 'text/javascript';
+const Search = ({ onSearchSubmit }) => {
+  const [term, setTerm] = useState('');
 
-  if (script.readyState) {
-    script.onreadystatechange = function () {
-      if (script.readyState === 'loaded' || script.readyState === 'complete') {
-        script.onreadystatechange = null;
-        callback();
-      }
-    };
-  } else {
-    script.onload = () => callback();
-  }
+  const onSubmit = (event) => {
+    // Prevent the page from reloading when pressing enter
+    event.preventDefault();
 
-  script.src = url;
-  document.getElementsByTagName('head')[0].appendChild(script);
-};
-
-function handleScriptLoad(updateQuery, autoCompleteRef) {
-  autoComplete = new window.google.maps.places.Autocomplete(
-    autoCompleteRef.current,
-    { types: ['(cities)'], componentRestrictions: { country: 'us' } }
-  );
-  autoComplete.setFields(['address_components', 'formatted_address']);
-  autoComplete.addListener('place_changed', () =>
-    handlePlaceSelect(updateQuery)
-  );
-}
-
-async function handlePlaceSelect(updateQuery) {
-  const addressObject = autoComplete.getPlace();
-  const query = addressObject.formatted_address;
-  updateQuery(query);
-  console.log(addressObject);
-}
-
-function Search() {
-  const [query, setQuery] = useState('');
-  const autoCompleteRef = useRef(null);
-
-  useEffect(() => {
-    loadScript(
-      `https://maps.googleapis.com/maps/api/js?key=${KEY}&libraries=places`,
-      () => handleScriptLoad(setQuery, autoCompleteRef)
-    );
-  }, []);
-
+    on;
+  };
   return (
-    <div className="search-location-input">
-      <input
-        ref={autoCompleteRef}
-        onChange={(event) => setQuery(event.target.value)}
-        placeholder="Enter a City"
-        value={query}
-      />
+    <div>
+      <Form inline>
+        <FormControl
+          type="text"
+          placeholder="Enter a City"
+          className="mr-sm-2"
+        />
+        <Button size="sm" variant="outline-info">
+          Search
+        </Button>
+      </Form>
     </div>
   );
-}
+};
 
 export default Search;
