@@ -50,7 +50,6 @@ function Search() {
       `https://maps.googleapis.com/maps/api/js?key=${KEY}&libraries=places`,
       () => handleScriptLoad(setQuery, autoCompleteRef)
     );
-    console.log(autoComplete);
   }, []);
 
   return (
