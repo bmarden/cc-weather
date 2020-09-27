@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import Search from './Search';
 
-const Navigation = (search) => {
+const Navigation = ({ setDailyForecast }) => {
   return (
     <div>
       <Navbar bg="dark" variant="dark">
@@ -15,9 +15,7 @@ const Navigation = (search) => {
           <Nav.Link href="#historical">Historical Weather</Nav.Link>
           <Nav.Link href="#about">About</Nav.Link>
         </Nav>
-        <Form inline>
-          <Search />
-        </Form>
+        <Search setDailyForecast={setDailyForecast} />
       </Navbar>
     </div>
   );

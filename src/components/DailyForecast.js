@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Search from './Search';
 
-const DailyForecast = () => {
+const DailyForecast = ({ forecast }) => {
   // Holds the place returned from Search
 
   return (

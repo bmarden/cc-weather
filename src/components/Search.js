@@ -1,114 +1,64 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
 import './Search.css';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 
-const KEY = 'AIzaSyCjQg02of0xlwfpvo4v-GQZ7VxSaNRHBLM';
+const KEY = '';
 
-class Search extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      googleMapsReady: false,
-      address: '',
+const Search = ({ setDailyForecast }) => {
+  const [term, setTerm] = useState('Chico, CA, USA');
+  const [debouncedTerm, setDebouncedTerm] = useState(term);
+  // const [results, setResults] = useState([]);
+
+  // Wait for
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedTerm(term);
+    }, 1000);
+
+    // Reset the debounce timer
+    return () => {
+      clearTimeout(timerId);
     };
-  }
+  }, [term]);
 
-  componentDidMount() {
-    this.loadGoogleMaps(() => {
-      this.setState({ googleMapsReady: true });
-    });
-  }
-
-  componentWillUnmount() {
-    this.unloadGoogleMaps();
-  }
-
-  // Load the google maps api script
-  loadGoogleMaps = (callback) => {
-    const existingScript = document.getElementById('googlePlacesScript');
-    if (!existingScript) {
-      const script = document.createElement('script');
-      script.src =
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyCjQg02of0xlwfpvo4v-GQZ7VxSaNRHBLM&libraries=places';
-      script.id = 'googlePlacesScript';
-      document.body.appendChild(script);
-      //action to do after a script is loaded in our case setState
-      script.onload = () => {
-        if (callback) callback();
-      };
+  useEffect(() => {
+    if (debouncedTerm === '') {
+      return;
     }
-    if (existingScript && callback) callback();
-  };
+    axios
+      .get('https://api.openweathermap.org/data/2.5/forecast', {
+        params: {
+          q: debouncedTerm,
+          units: 'imperial',
+          appid: process.env.REACT_APP_OW_API_KEY,
+        },
+      })
+      .then((response) => {
+        setDailyForecast(response);
+      });
+  }, [debouncedTerm]);
 
-  unloadGoogleMaps = () => {
-    let googlePlacesScript = document.getElementById('googlePlacesScript');
-    if (googlePlacesScript) {
-      googlePlacesScript.remove();
-    }
-  };
+  // const handleTerm = (event) => {
+  //   console.log(event.target.value);
+  // };
 
-  handleChange = (address) => {
-    this.setState({ address });
-  };
-
-  handleSelect = (address) => {
-    geocodeByAddress(address)
-      .then((results) => getLatLng(results[0]))
-      .then((latLng) => console.log('Success', latLng))
-      .catch((error) => console.error('Error', error));
-  };
-
-  render() {
-    if (!this.state.googleMapsReady) {
-      return <p>Loading</p>;
-    }
-    const searchOptions = {
-      componentRestrictions: { country: 'us' },
-      types: ['(cities)'],
-    };
-    return (
-      <PlacesAutocomplete
-        value={this.state.address}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-        searchOptions={searchOptions}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <input
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input',
-              })}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map((suggestion) => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
-    );
-  }
-}
+  return (
+    <div>
+      <Form inline>
+        <FormControl
+          onChange={(e) => setTerm(e.target.value)}
+          value={term}
+          type="text"
+          placeholder="Search"
+          className="mr-sm-2"
+        />
+        <Button variant="outline-success">Search</Button>
+      </Form>
+    </div>
+  );
+};
 
 export default Search;

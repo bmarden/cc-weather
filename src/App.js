@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DailyForecast from './components/DailyForecast';
 import Navigation from './components/Navigation';
 import Search from './components/Search';
 
 export default () => {
+  const [forecast, setForecast] = useState(null);
+
+  useEffect(() => {
+    if (forecast != null) {
+      console.log(forecast);
+    }
+  });
   return (
     <div>
-      <Navigation />
+      <Navigation setDailyForecast={setForecast} />
       <div>
-        <DailyForecast />
+        <DailyForecast forecast={forecast} />
       </div>
     </div>
   );
