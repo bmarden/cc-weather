@@ -1,6 +1,7 @@
 import React from 'react';
 import DailyForecast from './components/DailyForecast';
 import Navigation from './components/Navigation';
+import Search from './components/Search';
 
 export default () => {
   return (

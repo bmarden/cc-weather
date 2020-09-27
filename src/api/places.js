@@ -1,1 +1,1 @@
-const KEY = 'AIzaSyCjQg02of0xlwfpvo4v-GQZ7VxSaNRHBLM';
+<script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>;
