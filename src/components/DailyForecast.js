@@ -8,6 +8,8 @@ import Col from 'react-bootstrap/Col';
 import Media from 'react-bootstrap/Media';
 import Axios from 'axios';
 import './DailyForecast.css';
+import 'weather-icons/css/weather-icons.min.css';
+import 'weather-icons/css/weather-icons-wind.min.css';
 
 const DailyForecast = ({ hourlyForecast }) => {
   const [curWeather, setCurWeather] = useState(null);
@@ -39,19 +41,29 @@ const DailyForecast = ({ hourlyForecast }) => {
       {curWeather != null ? (
         <Media>
           <img
+            width="100"
+            height="100"
             src={`https://openweathermap.org/img/wn/${curWeather.weather[0].icon}@2x.png`}
-            alt="Generic placeholder"
+            alt="Current condition"
           />
           <Media.Body>
             <h5>
               {curWeather.name} {curWeather.main.temp} &#176;
             </h5>
             <ul>
-              <li>Conditions: {curWeather.weather[0].main}</li>
               <li>Feels like: {curWeather.main.feels_like}&#176;</li>
+              <li>Conditions: {curWeather.weather[0].main}</li>
+              <li>
+                Wind:{' '}
+                <i
+                  className={`wi wi-wind towards-${curWeather.wind.deg}-deg`}
+                  style={{ fontSize: '1.5em;' }}
+                >
+                  &nbsp;
+                </i>
+                {curWeather.wind.speed}
+              </li>
             </ul>
-            {/* <p>Conditions: {curWeather.weather[0].main}</p>
-            <p>Feels like: {curWeather.main.feels_like}&#176;</p> */}
           </Media.Body>
         </Media>
       ) : (
