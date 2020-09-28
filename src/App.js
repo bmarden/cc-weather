@@ -4,18 +4,18 @@ import Navigation from './components/Navigation';
 import Search from './components/Search';
 
 export default () => {
-  const [forecast, setForecast] = useState(null);
+  const [hourlyForecast, setHourlyForecast] = useState(null);
 
-  useEffect(() => {
-    if (forecast != null) {
-      console.log(forecast);
-    }
-  });
+  // useEffect(() => {
+  //   if (forecast != null) {
+  //     console.log(forecast);
+  //   }
+  // });
   return (
     <div>
-      <Navigation setDailyForecast={setForecast} />
+      <Navigation setDailyForecast={setHourlyForecast} />
       <div>
-        <DailyForecast forecast={forecast} />
+        <DailyForecast hourlyForecast={hourlyForecast} />
       </div>
     </div>
   );

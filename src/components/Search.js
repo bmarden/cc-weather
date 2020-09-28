@@ -39,7 +39,7 @@ const Search = ({ setDailyForecast }) => {
       .then((response) => {
         setDailyForecast(response);
       });
-  }, [debouncedTerm]);
+  }, [debouncedTerm, setDailyForecast]);
 
   // const handleTerm = (event) => {
   //   console.log(event.target.value);
