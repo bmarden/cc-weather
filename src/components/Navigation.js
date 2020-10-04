@@ -4,7 +4,6 @@ import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
-import Search from './Search';
 
 const Navigation = ({ onButtonClick }) => {
   const [searchValue, setSearchValue] = useState('');
