@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Axios from 'axios';
+import openw from './api/openw';
 import { Spinner } from 'react-bootstrap';
 
 export default () => {
@@ -22,16 +23,11 @@ export default () => {
   useEffect(() => {
     const getHourlyForecast = async () => {
       try {
-        const response = Axios.get(
-          'https://api.openweathermap.org/data/2.5/forecast',
-          {
-            params: {
-              q: searchText,
-              units: 'imperial',
-              appid: process.env.REACT_APP_OW_API_KEY,
-            },
-          }
-        );
+        const response = openw.get('/forecast', {
+          params: {
+            q: searchText,
+          },
+        });
         setHourlyForecast(response);
       } catch (err) {
         console.log(err);
@@ -43,16 +39,11 @@ export default () => {
   useEffect(() => {
     const getCurWeather = async () => {
       try {
-        const response = await Axios.get(
-          'https://api.openweathermap.org/data/2.5/weather',
-          {
-            params: {
-              q: searchText,
-              units: 'imperial',
-              appid: process.env.REACT_APP_OW_API_KEY,
-            },
-          }
-        );
+        const response = await openw.get('/weather', {
+          params: {
+            q: searchText,
+          },
+        });
         setCurWeather(response.data);
         setLoading(false);
       } catch (err) {
