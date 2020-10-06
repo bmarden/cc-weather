@@ -33,7 +33,7 @@ const Navigation = ({ onButtonClick }) => {
             onChange={(e) => setSearchValue(e.target.value)}
             onKeyDown={handleSubmit}
           />
-          <Button onClick={(e) => onButtonClick(searchValue)}>Search</Button>
+          <Button onClick={() => onButtonClick(searchValue)}>Search</Button>
         </Form>
         {/* <Search setDailyForecast={setDailyForecast} /> */}
       </Navbar>

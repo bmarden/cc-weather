@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Search.css';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-
-const KEY = '';
 
 const Search = ({ setDailyForecast }) => {
   const [term, setTerm] = useState('Chico, CA, USA');
