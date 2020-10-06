@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import CurWeather from './components/CurWeather';
-import HourlyForecast from './components/HourlyForecast';
-import Navigation from './components/Navigation';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Axios from 'axios';
+import { Jumbotron, Spinner } from 'react-bootstrap';
 import openw from './api/openw';
-import { Spinner } from 'react-bootstrap';
+import CurWeather from './components/CurWeather';
+import Navigation from './components/Navigation';
+import HourlyForecast from './components/HourlyForecast';
 
 export default () => {
   const [hourlyForecast, setHourlyForecast] = useState(null);
@@ -15,26 +14,28 @@ export default () => {
   const [searchText, setSearchText] = useState('Chico, CA, USA');
   const [loading, setLoading] = useState(true);
 
-  const handleSearch = (searchText) => {
-    setSearchText(searchText);
-    console.log(searchText);
+  const handleSearch = (s) => {
+    setSearchText(s);
   };
 
   useEffect(() => {
     const getHourlyForecast = async () => {
       try {
-        const response = openw.get('/forecast', {
+        const response = await openw.get('/onecall', {
           params: {
-            q: searchText,
+            lat: curWeather.coord.lat,
+            lon: curWeather.coord.lon,
           },
         });
         setHourlyForecast(response);
       } catch (err) {
-        console.log(err);
+        console.error = (msg) => {
+          throw new Error(msg);
+        };
       }
     };
     getHourlyForecast();
-  }, [searchText]);
+  }, [searchText, curWeather]);
 
   useEffect(() => {
     const getCurWeather = async () => {
@@ -47,7 +48,9 @@ export default () => {
         setCurWeather(response.data);
         setLoading(false);
       } catch (err) {
-        console.log(err);
+        console.error = (msg) => {
+          throw new Error(msg);
+        };
       }
     };
     getCurWeather();
@@ -57,19 +60,22 @@ export default () => {
     <div>
       <Navigation onButtonClick={handleSearch} />
       <div>
+        <h1>CC Weather</h1>
         <Container>
-          <Row>
-            <Col>
-              {loading ? (
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              ) : (
-                <CurWeather weather={curWeather} />
-              )}
-            </Col>
-            <HourlyForecast forecast={hourlyForecast} />
-          </Row>
+          <Jumbotron id="jumbo-weather">
+            <Row>
+              <Col>
+                {loading ? (
+                  <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                ) : (
+                  <CurWeather weather={curWeather} />
+                )}
+              </Col>
+              <HourlyForecast forecast={hourlyForecast} />
+            </Row>
+          </Jumbotron>
         </Container>
       </div>
     </div>
