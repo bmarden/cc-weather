@@ -12,6 +12,7 @@ const HourlyForecast = ({ hour }) => {
               {hour.temp}
             </Accordion.Toggle>
           </Card.Header>
+          <i className={`wi wi-owm-${hour.weather[0].id}`} />
         </Card>
       </Accordion>
     </div>
