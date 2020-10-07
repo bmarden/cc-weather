@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import FormControl from 'react-bootstrap/FormControl';
+import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
 
 const Navigation = ({ onButtonClick }) => {
   const [searchValue, setSearchValue] = useState('');
@@ -17,7 +13,7 @@ const Navigation = ({ onButtonClick }) => {
 
   return (
     <div>
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg="primary" variant="dark">
         <Navbar.Brand href="#home">CC-Weather</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="#home">Home</Nav.Link>

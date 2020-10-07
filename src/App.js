@@ -32,6 +32,7 @@ const App = () => {
       });
       setHourlyForecast(response.data);
       setForecastLoaded(true);
+      console.log(response.data);
     };
     getHourlyForecast();
   }, [searchText, curWeather]);
@@ -45,6 +46,7 @@ const App = () => {
       });
       setCurWeather(response.data);
       setWeatherLoaded(true);
+      console.log(response.data);
     };
     getCurWeather();
   }, [searchText]);
@@ -53,11 +55,11 @@ const App = () => {
     <div>
       <Navigation onButtonClick={handleSearch} />
       <div>
-        <h1>CC Weather</h1>
         <Container>
           <Jumbotron id="jumbo-weather">
+            <h1>CC Weather</h1>
             <Row>
-              <Col md="4">
+              <Col md="12" lg="4">
                 {weatherLoaded === false ? (
                   <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
@@ -66,17 +68,17 @@ const App = () => {
                   <CurWeather weather={curWeather} />
                 )}
               </Col>
-              <Col md="8">
+              <Col lg="8">
                 {forecastLoaded === false ? (
                   <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 ) : (
                   <Accordion>
-                    {Object.keys(hourlyForecast.hourly).map(function (key) {
+                    {Object.keys(hourlyForecast.hourly).map((key) => {
                       // Only show hourly data for 12 hours
                       if (key >= 12) {
-                        return;
+                        return undefined;
                       }
                       return (
                         <HourlyForecast

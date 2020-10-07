@@ -1,14 +1,13 @@
 import React from 'react';
-import './packages/weather-icons/css/weather-icons.min.css';
+import '../packages/weather-icons/css/weather-icons.min.css';
 import { Row, Accordion, Card, Container, Col } from 'react-bootstrap';
 import './HourlyForecast.css';
 
 const HourlyForecast = ({ hour, id }) => {
-  console.log(hour);
   // Convert the unix time stamp to a local time
   const convertUnixTime = (dt) => {
     // Multiply by 1000 so arg is in milliseconds
-    let date = new Date(dt * 1000);
+    const date = new Date(dt * 1000);
     return date.toLocaleString('en-US', { hour: 'numeric', hour12: true });
   };
 
