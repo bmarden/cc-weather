@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Jumbotron, Spinner } from 'react-bootstrap';
+import { Accordion, Jumbotron, Spinner } from 'react-bootstrap';
 import openw from './api/openw';
 import CurWeather from './components/CurWeather';
 import Navigation from './components/Navigation';
 import HourlyForecast from './components/HourlyForecast';
 
-export default () => {
+const App = () => {
   const [hourlyForecast, setHourlyForecast] = useState(null);
   const [curWeather, setCurWeather] = useState(null);
   const [searchText, setSearchText] = useState('Chico, CA, USA');
@@ -57,7 +57,7 @@ export default () => {
         <Container>
           <Jumbotron id="jumbo-weather">
             <Row>
-              <Col>
+              <Col md="4">
                 {weatherLoaded === false ? (
                   <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
@@ -66,15 +66,29 @@ export default () => {
                   <CurWeather weather={curWeather} />
                 )}
               </Col>
-              {forecastLoaded === false ? (
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              ) : (
-                hourlyForecast.hourly.map((item) => (
-                  <HourlyForecast hour={item} />
-                ))
-              )}
+              <Col md="8">
+                {forecastLoaded === false ? (
+                  <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                ) : (
+                  <Accordion>
+                    {Object.keys(hourlyForecast.hourly).map(function (key) {
+                      // Only show hourly data for 12 hours
+                      if (key >= 12) {
+                        return;
+                      }
+                      return (
+                        <HourlyForecast
+                          key={key}
+                          hour={hourlyForecast.hourly[key]}
+                          id={key}
+                        />
+                      );
+                    })}
+                  </Accordion>
+                )}
+              </Col>
             </Row>
           </Jumbotron>
         </Container>
@@ -82,3 +96,5 @@ export default () => {
     </div>
   );
 };
+
+export default App;
