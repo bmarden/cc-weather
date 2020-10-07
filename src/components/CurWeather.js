@@ -1,5 +1,7 @@
 import React from 'react';
 import Media from 'react-bootstrap/Media';
+import './packages/weather-icons/css/weather-icons.min.css';
+import './packages/weather-icons/css/weather-icons-wind.min.css';
 import './CurWeather.css';
 
 const CurWeather = ({ weather }) => {

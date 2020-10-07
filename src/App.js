@@ -12,46 +12,39 @@ export default () => {
   const [hourlyForecast, setHourlyForecast] = useState(null);
   const [curWeather, setCurWeather] = useState(null);
   const [searchText, setSearchText] = useState('Chico, CA, USA');
-  const [loading, setLoading] = useState(true);
+  const [weatherLoaded, setWeatherLoaded] = useState(false);
+  const [forecastLoaded, setForecastLoaded] = useState(false);
 
   const handleSearch = (s) => {
     setSearchText(s);
   };
 
   useEffect(() => {
+    if (curWeather == null) {
+      return;
+    }
     const getHourlyForecast = async () => {
-      try {
-        const response = await openw.get('/onecall', {
-          params: {
-            lat: curWeather.coord.lat,
-            lon: curWeather.coord.lon,
-          },
-        });
-        setHourlyForecast(response);
-      } catch (err) {
-        console.error = (msg) => {
-          throw new Error(msg);
-        };
-      }
+      const response = await openw.get('/onecall', {
+        params: {
+          lat: curWeather.coord.lat,
+          lon: curWeather.coord.lon,
+        },
+      });
+      setHourlyForecast(response.data);
+      setForecastLoaded(true);
     };
     getHourlyForecast();
   }, [searchText, curWeather]);
 
   useEffect(() => {
     const getCurWeather = async () => {
-      try {
-        const response = await openw.get('/weather', {
-          params: {
-            q: searchText,
-          },
-        });
-        setCurWeather(response.data);
-        setLoading(false);
-      } catch (err) {
-        console.error = (msg) => {
-          throw new Error(msg);
-        };
-      }
+      const response = await openw.get('/weather', {
+        params: {
+          q: searchText,
+        },
+      });
+      setCurWeather(response.data);
+      setWeatherLoaded(true);
     };
     getCurWeather();
   }, [searchText]);
@@ -65,7 +58,7 @@ export default () => {
           <Jumbotron id="jumbo-weather">
             <Row>
               <Col>
-                {loading ? (
+                {weatherLoaded === false ? (
                   <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                   </Spinner>
@@ -73,7 +66,15 @@ export default () => {
                   <CurWeather weather={curWeather} />
                 )}
               </Col>
-              <HourlyForecast forecast={hourlyForecast} />
+              {forecastLoaded === false ? (
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              ) : (
+                hourlyForecast.hourly.map((item) => (
+                  <HourlyForecast hour={item} />
+                ))
+              )}
             </Row>
           </Jumbotron>
         </Container>
