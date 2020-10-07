@@ -3,6 +3,11 @@ ul {
     padding-left: 0;
 }
 
+li {
+    font-size: 1.2em;
+
+}
+
 #jumbo-weather {
-    background-color: #949494;
+    background: rgba(167, 167, 167, 0.815);
 }
