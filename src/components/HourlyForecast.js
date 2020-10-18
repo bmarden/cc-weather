@@ -54,10 +54,10 @@ const HourlyForecast = ({ hour, id }) => {
         <Card.Body>
           <Container>
             <Row>
-              <Col>Feels like: {hour.feels_like} &#176;F</Col>
               <Col>Cloud cover: {hour.clouds}%</Col>
               <Col>Humidity: {hour.humidity}%</Col>
               <Col>Dew point: {hour.dew_point}</Col>
+              <Col>Pressure: {hour.pressure}</Col>
             </Row>
           </Container>
         </Card.Body>

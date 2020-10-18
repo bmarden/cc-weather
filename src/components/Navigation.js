@@ -12,10 +12,11 @@ const Navigation = ({ onButtonClick }) => {
   };
 
   return (
-    <div>
-      <Navbar bg="primary" variant="dark">
-        <Navbar.Brand href="#home">CC-Weather</Navbar.Brand>
-        <Nav className="mr-auto">
+    <Navbar collapseOnSelect bg="primary" variant="dark" expand="lg">
+      <Navbar.Brand href="#home">CC-Weather</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto ">
           <Nav.Link href="#home">Home</Nav.Link>
           <Nav.Link href="#five-day-forecast">5 day forecast</Nav.Link>
           <Nav.Link href="#historical">Historical Weather</Nav.Link>
@@ -31,9 +32,8 @@ const Navigation = ({ onButtonClick }) => {
           />
           <Button onClick={() => onButtonClick(searchValue)}>Search</Button>
         </Form>
-        {/* <Search setDailyForecast={setDailyForecast} /> */}
-      </Navbar>
-    </div>
+      </Navbar.Collapse>
+    </Navbar>
   );
 };
 

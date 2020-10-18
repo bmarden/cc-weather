@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { Accordion, Jumbotron, Spinner } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Accordion,
+  Jumbotron,
+  Spinner,
+} from 'react-bootstrap';
 import openw from './api/openw';
 import CurWeather from './components/CurWeather';
 import Navigation from './components/Navigation';
