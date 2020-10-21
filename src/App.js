@@ -36,7 +36,7 @@ const App = () => {
       });
       setHourlyForecast(response.data);
       setForecastLoaded(true);
-      console.log(response.data);
+      // console.log(response.data);
     };
     getHourlyForecast();
   }, [searchText, curWeather]);
@@ -50,14 +50,14 @@ const App = () => {
       });
       setCurWeather(response.data);
       setWeatherLoaded(true);
-      console.log(response.data);
+      // console.log(response.data);
     };
     getCurWeather();
   }, [searchText]);
 
   return (
     <div>
-      <Navigation onButtonClick={handleSearch} />
+      <Navigation />
       <div>
         <Container>
           <Jumbotron id="jumbo-weather">
