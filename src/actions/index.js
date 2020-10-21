@@ -17,3 +17,14 @@ export const fetchCurWeather = () => async (dispatch, getState) => {
   console.log(response.data);
   dispatch({ type: 'FETCH_CUR_WEATHER', payload: response.data });
 };
+
+export const fetchHourlyForecast = (coords) => async (dispatch) => {
+  dispatch({ type: 'GET_FORECAST_REQUEST' });
+  const response = await openw.get('/onecall', {
+    params: {
+      lat: coords.lat,
+      lon: coords.lon,
+    },
+  });
+  dispatch({ type: 'GET_FORECAST_SUCCESS', payload: response.data });
+};
