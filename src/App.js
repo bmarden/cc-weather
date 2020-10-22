@@ -10,9 +10,9 @@ import {
 import { connect } from 'react-redux';
 
 import { fetchHourlyForecast } from './actions';
-import CurWeather from './components/CurWeather';
-import Navigation from './components/Navigation';
-import HourlyForecast from './components/HourlyForecast';
+import CurWeather from './components/currentWx/CurWeather';
+import Navigation from './app/Navigation';
+import HourlyForecast from './components/hourlyWx/HourlyForecast';
 
 class App extends Component {
   // const [hourlyForecast, setHourlyForecast] = useState(null);
