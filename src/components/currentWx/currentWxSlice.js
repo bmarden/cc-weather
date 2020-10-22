@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import openw from '../../api/openw';
 
 const initialState = {
   currentWx: [],
@@ -6,20 +7,30 @@ const initialState = {
   error: null,
 };
 
+export const fetchCurWx = createAsyncThunk(
+  'currentWx/fetchCurWx',
+  async (searchTerm) => {
+    const response = await openw.get('/weather', {
+      q: searchTerm,
+    });
+    return response.data;
+  }
+);
+
 const currentWxSlice = createSlice({
   name: 'currentWx',
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchPosts.pending]: (state, action) => {
+    [fetchCurWx.pending]: (state, action) => {
       state.status = 'loading';
     },
-    [fetchPosts.fulfilled]: (state, action) => {
+    [fetchCurWx.fulfilled]: (state, action) => {
       state.status = 'succeeded';
       // Add any fetched posts to the array
-      state.posts = state.posts.concat(action.payload);
+      state.currentWx = action.payload;
     },
-    [fetchPosts.rejected]: (state, action) => {
+    [fetchCurWx.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.error.message;
     },
