@@ -12,27 +12,27 @@ const HourlyForecast = () => {
   const dispatch = useDispatch();
   const coords = useSelector((state) => state.currentWx.curWx.coord);
   const hourlyWxStatus = useSelector((state) => state.hourlyWx.status);
-  const forecast = useSelector((state) => state.hourlyWx.hourlyWx);
+  // const forecast = useSelector((state) => state.hourlyWx.hourlyWx);
 
-  let content;
-  const id = 0;
+  let forecast = [];
+  // let coords = null;
+  // let coords = [];
 
   useEffect(() => {
-    if (coords != null) {
-      dispatch(fetchHourlyWx());
-    } else {
-      console.log('not loading');
+    if (coords) {
+      console.log(coords);
+      dispatch(fetchHourlyWx({ lat: coords.lat, lon: coords.lon }));
     }
   }, [coords, dispatch]);
 
   return (
     <>
-      {hourlyWxStatus === 'loading' ? (
+      {/* {hourlyWxStatus === 'loading' ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        forecast.map((item, index) => (
+        forecast.hourly.map((item, index) => (
           <Card>
             <Accordion.Toggle as={Card.Header} variant="link" eventKey={index}>
               <Container>
@@ -55,7 +55,7 @@ const HourlyForecast = () => {
             </Accordion.Collapse>
           </Card>
         ))
-      )}
+      )} */}
     </>
   );
 };

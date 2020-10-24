@@ -11,14 +11,14 @@ const coords = { lat: '39.727879', lon: '-121.836879' };
 
 export const fetchHourlyWx = createAsyncThunk(
   'hourlyWx/fetchHourlyWx',
-  async () => {
+  async (coords) => {
     const response = await openw.get('/onecall', {
       params: {
         lat: coords.lat,
         lon: coords.lon,
       },
     });
-    return response.data.hourly;
+    return response.data;
   }
 );
 
