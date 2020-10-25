@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-import Search from '../common/search/Search';
+import Search from '../components/searchBar/Search';
 
 const Navigation = () => {
   return (

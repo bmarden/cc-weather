@@ -4,7 +4,6 @@ import {
   createEntityAdapter,
 } from '@reduxjs/toolkit';
 
-import { convertUnixTime } from '../../common/utils';
 import openw from '../../api/openw';
 
 // Use reduxjs/toolkit to normalize data in the store
