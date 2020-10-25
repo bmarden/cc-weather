@@ -30,9 +30,11 @@ const HourlyForecast = () => {
       </Spinner>
     );
   } else if (hourlyWxStatus === 'succeeded') {
-    content = hours.map((hourWxId) => (
-      <ForecastItem key={hourWxId} hourWxId={hourWxId} />
-    ));
+    content = hours.map((hourWxId, index) => {
+      if (index < 12) {
+        return <ForecastItem key={hourWxId} hourWxId={hourWxId} />;
+      } else return undefined;
+    });
   }
 
   return (
