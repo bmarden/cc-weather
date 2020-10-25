@@ -1,13 +1,25 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  createSelector,
+  createEntityAdapter,
+} from '@reduxjs/toolkit';
+
+import { convertUnixTime } from '../../common/utils';
 import openw from '../../api/openw';
 
-const initialState = {
-  hourlyWx: [],
+const hourlyWxAdapter = createEntityAdapter({
+  selectId: (hour) => {
+    return convertUnixTime(hour.dt);
+  },
+});
+
+const initialState = hourlyWxAdapter.getInitialState({
   status: 'idle',
   error: null,
-};
+});
 
-const coords = { lat: '39.727879', lon: '-121.836879' };
+// const coords = { lat: '39.727879', lon: '-121.836879' };
 
 export const fetchHourlyWx = createAsyncThunk(
   'hourlyWx/fetchHourlyWx',
@@ -18,7 +30,7 @@ export const fetchHourlyWx = createAsyncThunk(
         lon: coords.lon,
       },
     });
-    return response.data;
+    return response.data.hourly;
   }
 );
 
@@ -33,7 +45,7 @@ const hourlyWxSlice = createSlice({
     [fetchHourlyWx.fulfilled]: (state, action) => {
       state.status = 'succeeded';
       // Add any fetched posts to the array
-      state.hourlyWx = action.payload;
+      hourlyWxAdapter.setAll(state, action.payload);
     },
     [fetchHourlyWx.rejected]: (state, action) => {
       state.status = 'failed';
@@ -43,3 +55,9 @@ const hourlyWxSlice = createSlice({
 });
 
 export default hourlyWxSlice.reducer;
+
+export const {
+  selectAll: selectAllHourlyData,
+  selectById: selectHourById,
+  selectIds: selectAllHours,
+} = hourlyWxAdapter.getSelectors((state) => state.hourlyWx);

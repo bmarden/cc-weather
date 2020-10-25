@@ -1,61 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Accordion, Spinner, Col } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+
+import './HourlyForecast.css';
 import '../../packages/weather-icons/css/weather-icons.min.css';
 import '../../packages/weather-icons/css/weather-icons-wind.min.css';
-import { Row, Accordion, Card, Container, Col, Spinner } from 'react-bootstrap';
-import './HourlyForecast.css';
+
+import { fetchHourlyWx, selectAllHours } from './hourlyWxSlice';
 import ForecastItem from './ForecastItem';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchHourlyWx } from './hourlyWxSlice';
 
 const HourlyForecast = () => {
   const dispatch = useDispatch();
   const coords = useSelector((state) => state.currentWx.curWx.coord);
   const hourlyWxStatus = useSelector((state) => state.hourlyWx.status);
-  // const forecast = useSelector((state) => state.hourlyWx.hourlyWx);
-
-  let forecast = [];
-  // let coords = null;
-  // let coords = [];
+  const hours = useSelector(selectAllHours);
 
   useEffect(() => {
     if (coords) {
-      console.log(coords);
       dispatch(fetchHourlyWx({ lat: coords.lat, lon: coords.lon }));
     }
   }, [coords, dispatch]);
 
+  let content;
+
+  if (hourlyWxStatus === 'loading' || hourlyWxStatus === 'idle') {
+    content = (
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
+  } else if (hourlyWxStatus === 'succeeded') {
+    content = hours.map((hourWxId) => (
+      <ForecastItem key={hourWxId} hourWxId={hourWxId} />
+    ));
+  }
+
   return (
     <>
-      {/* {hourlyWxStatus === 'loading' ? (
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      ) : (
-        forecast.hourly.map((item, index) => (
-          <Card>
-            <Accordion.Toggle as={Card.Header} variant="link" eventKey={index}>
-              <Container>
-                <Row>
-                  <ForecastItem item={item} />
-                </Row>
-              </Container>
-            </Accordion.Toggle>
-            <Accordion.Collapse eventKey={index}>
-              <Card.Body>
-                <Container>
-                  <Row>
-                    <Col>Cloud cover: {item.clouds}%</Col>
-                    <Col>Humidity: {item.humidity}%</Col>
-                    <Col>Dew point: {item.dew_point}</Col>
-                    <Col>Pressure: {item.pressure}</Col>
-                  </Row>
-                </Container>
-              </Card.Body>
-            </Accordion.Collapse>
-          </Card>
-        ))
-      )} */}
+      <Col lg="8">
+        <Accordion>{content}</Accordion>
+      </Col>
     </>
   );
 };

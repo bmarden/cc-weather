@@ -1,12 +1,10 @@
 import React from 'react';
-import { Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Col, Accordion, Container, Row, Card } from 'react-bootstrap';
+import { selectHourById } from './hourlyWxSlice';
 
-const ForecastItem = ({ forecast }) => {
-  const convertUnixTime = (dt) => {
-    // Multiply by 1000 so arg is in milliseconds
-    const date = new Date(dt * 1000);
-    return date.toLocaleString('en-US', { hour: 'numeric', hour12: true });
-  };
+const ForecastItem = ({ hourWxId }) => {
+  const hourForecast = useSelector((state) => selectHourById(state, hourWxId));
 
   const capitalizeFirstChar = (s) => {
     if (typeof s !== 'string') return '';
@@ -14,30 +12,52 @@ const ForecastItem = ({ forecast }) => {
   };
   return (
     <>
-      <Col md="3">
-        {' '}
-        <i
-          className={`hf-icon wi wi-owm-${forecast.hourlyWx.weather[0].id}`}
-        />{' '}
-        &nbsp; &nbsp;
-        <span className="hf-title">{convertUnixTime(forecast.dt)}</span>{' '}
-      </Col>
+      <Card>
+        <Accordion.Toggle as={Card.Header} variant="link" eventKey={hourWxId}>
+          <Container>
+            <Row>
+              <Col md="3">
+                {' '}
+                <i
+                  className={`hf-icon wi wi-owm-${hourForecast.weather[0].id}`}
+                />{' '}
+                &nbsp; &nbsp;
+                <span className="hf-title">{hourWxId}</span>{' '}
+              </Col>
 
-      <Col md="3" className="text-left">
-        <span className="hf-val">
-          {capitalizeFirstChar(forecast.weather[0].description)}{' '}
-        </span>
-      </Col>
-      <Col md="3" className="text-center">
-        <span className="hf-title">Temp: </span>{' '}
-        <span className="hf-val">{Math.round(forecast.temp)} &#176;F </span>
-      </Col>
-      <Col md="3">
-        <span className="hf-title">Feels like: </span>{' '}
-        <span className="hf-val">
-          {Math.round(forecast.feels_like)} &#176;F{' '}
-        </span>
-      </Col>
+              <Col md="3" className="text-left">
+                <span className="hf-val">
+                  {capitalizeFirstChar(hourForecast.weather[0].description)}{' '}
+                </span>
+              </Col>
+              <Col md="3" className="text-center">
+                <span className="hf-title">Temp: </span>{' '}
+                <span className="hf-val">
+                  {Math.round(hourForecast.temp)} &#176;F{' '}
+                </span>
+              </Col>
+              <Col md="3">
+                <span className="hf-title">Feels like: </span>{' '}
+                <span className="hf-val">
+                  {Math.round(hourForecast.feels_like)} &#176;F{' '}
+                </span>
+              </Col>
+            </Row>
+          </Container>
+        </Accordion.Toggle>
+        <Accordion.Collapse eventKey={hourWxId}>
+          <Card.Body>
+            <Container>
+              <Row>
+                <Col>Cloud cover: {hourForecast.clouds}%</Col>
+                <Col>Humidity: {hourForecast.humidity}%</Col>
+                <Col>Dew point: {hourForecast.dew_point}</Col>
+                <Col>Pressure: {hourForecast.pressure}</Col>
+              </Row>
+            </Container>
+          </Card.Body>
+        </Accordion.Collapse>
+      </Card>
     </>
   );
 };
