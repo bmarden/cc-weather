@@ -1,25 +1,22 @@
 import {
   createAsyncThunk,
   createSlice,
-  createSelector,
   createEntityAdapter,
 } from '@reduxjs/toolkit';
 
 import { convertUnixTime } from '../../common/utils';
 import openw from '../../api/openw';
 
+// Use reduxjs/toolkit to normalize data in the store
+// Store hourly data as the entity and use time (dt) as the unique key
 const hourlyWxAdapter = createEntityAdapter({
-  selectId: (hour) => {
-    return convertUnixTime(hour.dt);
-  },
+  selectId: (hour) => hour.dt,
 });
 
 const initialState = hourlyWxAdapter.getInitialState({
   status: 'idle',
   error: null,
 });
-
-// const coords = { lat: '39.727879', lon: '-121.836879' };
 
 export const fetchHourlyWx = createAsyncThunk(
   'hourlyWx/fetchHourlyWx',

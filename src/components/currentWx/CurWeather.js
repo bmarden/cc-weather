@@ -20,6 +20,7 @@ const CurWeather = () => {
     }
   }, [curWxStatus, dispatch]);
 
+  // Display spinner if data is still loading
   let content;
   if (curWxStatus === 'loading') {
     content = (

@@ -2,14 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Col, Accordion, Container, Row, Card } from 'react-bootstrap';
 import { selectHourById } from './hourlyWxSlice';
+import { convertUnixTime, capitalizeFirstChar } from '../../common/utils';
 
 const ForecastItem = ({ hourWxId }) => {
+  // Get data for the hour at hourWxId
   const hourForecast = useSelector((state) => selectHourById(state, hourWxId));
 
-  const capitalizeFirstChar = (s) => {
-    if (typeof s !== 'string') return '';
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  };
   return (
     <>
       <Card>
@@ -22,7 +20,9 @@ const ForecastItem = ({ hourWxId }) => {
                   className={`hf-icon wi wi-owm-${hourForecast.weather[0].id}`}
                 />{' '}
                 &nbsp; &nbsp;
-                <span className="hf-title">{hourWxId}</span>{' '}
+                <span className="hf-title">
+                  {convertUnixTime(hourWxId)}
+                </span>{' '}
               </Col>
 
               <Col md="3" className="text-left">
