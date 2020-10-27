@@ -23,7 +23,7 @@ const Search = () => {
       const place = autoComplete.current.getPlace();
       const query = place.formatted_address;
 
-      // Get the location's bounds if they exist
+      // Get the location's bounds if they exist, and set
       let bounds = new window.google.maps.LatLngBounds();
       if (place.geometry.viewport) {
         bounds.union(place.geometry.viewport);
@@ -75,9 +75,6 @@ const Search = () => {
 
   return (
     <>
-      <div>
-        Script loaded: <b>{mapsSrcLoaded.toString()}</b>
-      </div>
       <div className="search-location-input">
         <Form inline>
           <FormControl
