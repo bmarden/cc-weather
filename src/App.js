@@ -4,6 +4,7 @@ import { Container, Row, Jumbotron } from 'react-bootstrap';
 import CurWeather from './components/currentWx/CurWeather';
 import Navigation from './app/Navigation';
 import HourlyForecast from './components/hourlyWx/HourlyForecast';
+import Historical from './components/historicalWx/Historical';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
               <HourlyForecast />
             </Row>
           </Jumbotron>
+          <Historical />
         </Container>
       </div>
     </div>

@@ -29,12 +29,24 @@ export const fetchStationData = createAsyncThunk(
   async (bounds) => {
     const response = await noaa.get('/stations', {
       params: {
+        datasetid: 'GHCND',
+        datacategoryid: 'TEMP',
         extent: bounds,
       },
     });
     return response.data.results;
   }
 );
+
+// export const fetchHistTemp = createAsyncThunk(
+//   'histWx/fetchHistTemp',
+//   async () => {
+//     const response = await noaa.get('/data', {
+//       params: {},
+//     });
+//     return response.data;
+//   }
+// );
 
 const histWxSlice = createSlice({
   name: 'histWx',

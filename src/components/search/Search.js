@@ -11,7 +11,7 @@ import './Search.css';
 
 const Search = () => {
   const dispatch = useDispatch();
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState('Chico, CA, USA');
   const searchBarRef = useRef(null);
   const autoComplete = useRef(null);
   const [mapsSrcLoaded, error] = useScript(
@@ -86,7 +86,12 @@ const Search = () => {
             onChange={(e) => setTerm(e.target.value)}
             onKeyDown={handleSubmit}
           />
-          <Button variant="outline-success">Search</Button>
+          <Button
+            variant="outline-success"
+            onClick={(e) => dispatch(fetchCurWx(term))}
+          >
+            Search
+          </Button>
         </Form>
       </div>
     </>
