@@ -6,6 +6,7 @@ import {
 import { differenceInDays } from 'date-fns';
 
 import noaa from '../../api/noaa';
+import acis from '../../api/acis';
 
 // Return the largest date range for sortComparer function to sort ids
 const getMaxDayDiff = (range1, range2) => {
@@ -20,9 +21,7 @@ const getMaxDayDiff = (range1, range2) => {
   return range1Diff > range2Diff ? 1 : -1;
 };
 
-const histWxAdapter = createEntityAdapter({
-  sortComparer: (a, b) => getMaxDayDiff(a, b),
-});
+const histWxAdapter = createEntityAdapter();
 
 export const fetchStationData = createAsyncThunk(
   'histWx/fetchStationData',
@@ -38,15 +37,27 @@ export const fetchStationData = createAsyncThunk(
   }
 );
 
-// export const fetchHistTemp = createAsyncThunk(
-//   'histWx/fetchHistTemp',
-//   async () => {
-//     const response = await noaa.get('/data', {
-//       params: {},
-//     });
-//     return response.data;
-//   }
-// );
+export const fetchStationDataAcis = createAsyncThunk(
+  'histWx/fetchStationDataAcis',
+  async (params) => {
+    const response = await acis.get('/StnMeta', {
+      params: {
+        bbox: `${params.w},${params.s}, ${params.e}, ${params.n}`,
+      },
+    });
+    return response.data;
+  }
+);
+
+export const fetchHistTemp = createAsyncThunk(
+  'histWx/fetchHistTemp',
+  async () => {
+    const response = await noaa.get('/data', {
+      params: {},
+    });
+    return response.data;
+  }
+);
 
 const histWxSlice = createSlice({
   name: 'histWx',

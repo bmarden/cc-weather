@@ -8,6 +8,7 @@ import useScript from '../../common/hooks/useScript';
 import { fetchCurWx } from '../currentWx/currentWxSlice';
 import { updatedPlace } from './searchSlice';
 import './Search.css';
+/* global google */
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -15,21 +16,38 @@ const Search = () => {
   const searchBarRef = useRef(null);
   const autoComplete = useRef(null);
   const [mapsSrcLoaded, error] = useScript(
-    `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`
+    `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places,geometry`
   );
 
   const handlePlaceSelect = useCallback(
     async (updateQuery) => {
       const place = autoComplete.current.getPlace();
       const query = place.formatted_address;
+      const latLng = place.geometry.location;
 
-      // Get the location's bounds if they exist, and set
-      let bounds = new window.google.maps.LatLngBounds();
-      if (place.geometry.viewport) {
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
+      // Some variables to help expand the lat, lng returned from Places API
+      const expandDist = 10 * 1609.34; // Convert 10 miles to meters
+
+      let points = { n: 0, e: 90, s: 180, w: 270 };
+
+      // Use Google geometry library to calculate offset from center latLng returned from search
+      for (let i in points) {
+        points[i] = google.maps.geometry.spherical.computeOffset(
+          latLng,
+          expandDist,
+          points[i]
+        );
       }
+      let bounds = {
+        w: points.w.lng(),
+        s: points.s.lat(),
+        e: points.e.lng(),
+        n: points.n.lat(),
+      };
+      // let bounds = new google.maps.LatLngBounds(
+      //   new google.maps.LatLng(points.s.lat(), points.w.lng()),
+      //   new google.maps.LatLng(points.n.lat(), points.e.lng())
+      // );
 
       updateQuery(query);
       let placeObject = {
@@ -41,7 +59,7 @@ const Search = () => {
           lat: place.geometry.location.lat(),
           lng: place.geometry.location.lng(),
         },
-        bounds: bounds.toUrlValue(),
+        bounds: bounds,
       };
 
       dispatch(updatedPlace(placeObject));
