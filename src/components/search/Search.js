@@ -28,7 +28,7 @@ const Search = () => {
       // Some variables to help expand the lat, lng returned from Places API
       const expandDist = 10 * 1609.34; // Convert 10 miles to meters
 
-      let points = { n: 0, e: 90, s: 180, w: 270 };
+      const points = { n: 0, e: 90, s: 180, w: 270 };
 
       // Use Google geometry library to calculate offset from center latLng returned from search
       for (let i in points) {
@@ -38,16 +38,7 @@ const Search = () => {
           points[i]
         );
       }
-      let bounds = {
-        w: points.w.lng(),
-        s: points.s.lat(),
-        e: points.e.lng(),
-        n: points.n.lat(),
-      };
-      // let bounds = new google.maps.LatLngBounds(
-      //   new google.maps.LatLng(points.s.lat(), points.w.lng()),
-      //   new google.maps.LatLng(points.n.lat(), points.e.lng())
-      // );
+      const bounds = `${points.w.lng()},${points.s.lat()},${points.e.lng()}, ${points.n.lat()}`;
 
       updateQuery(query);
       let placeObject = {

@@ -1,90 +1,85 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  createEntityAdapter,
-} from '@reduxjs/toolkit';
-import { differenceInDays } from 'date-fns';
-
-import noaa from '../../api/noaa';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { differenceInDays, format, subMonths } from 'date-fns';
 import acis from '../../api/acis';
 
 // Return the largest date range for sortComparer function to sort ids
 const getMaxDayDiff = (range1, range2) => {
-  const range1Diff = differenceInDays(
-    new Date(range1.maxdate),
-    new Date(range1.mindate)
-  );
-  const range2Diff = differenceInDays(
-    new Date(range2.maxdate),
-    new Date(range2.mindate)
-  );
-  return range1Diff > range2Diff ? 1 : -1;
+  const range1Diff = differenceInDays(new Date(range1[1]), new Date(range1[0]));
+  const range2Diff = differenceInDays(new Date(range2[1]), new Date(range2[0]));
+  return range1Diff < range2Diff ? 1 : -1;
 };
-
-const histWxAdapter = createEntityAdapter();
 
 export const fetchStationData = createAsyncThunk(
   'histWx/fetchStationData',
-  async (bounds) => {
-    const response = await noaa.get('/stations', {
-      params: {
-        datasetid: 'GHCND',
-        datacategoryid: 'TEMP',
-        extent: bounds,
-      },
-    });
-    return response.data.results;
-  }
-);
-
-export const fetchStationDataAcis = createAsyncThunk(
-  'histWx/fetchStationDataAcis',
-  async (params) => {
-    const response = await acis.get('/StnMeta', {
-      params: {
-        bbox: `${params.w},${params.s}, ${params.e}, ${params.n}`,
-      },
-    });
+  async (args) => {
+    let form = new FormData();
+    form.append('bbox', `${args}`);
+    form.append('meta', ['name', 'sids', 'uid', 'valid_daterange']);
+    form.append('elems', ['maxt', 'mint']);
+    form.append('sdate', format(new Date(), 'yyyy-MM-dd'));
+    const response = await acis.post('/StnMeta', form);
     return response.data;
   }
 );
 
 export const fetchHistTemp = createAsyncThunk(
   'histWx/fetchHistTemp',
-  async () => {
-    const response = await noaa.get('/data', {
-      params: {},
-    });
+  async (_, { getState }) => {
+    const stations = selectStations(getState());
+    console.log(stations);
+    let form = new FormData();
+    form.append('sid', stations[0].sids[0]);
+    // subtract 12 months from todays date as a start date to get data
+    form.append('sdate', format(subMonths(new Date(), 12), 'yyyy-MM-dd'));
+    form.append('edate', format(new Date(), 'yyyy-MM-dd'));
+    form.append('elems', ['maxt', 'mint']);
+    const response = await acis.post('/StnData', form);
     return response.data;
   }
 );
 
+const initialState = {
+  stations: [],
+  data: [],
+  stationsStatus: 'idle',
+  stationsError: null,
+  dataStatus: 'idle',
+  dataError: null,
+};
+
 const histWxSlice = createSlice({
   name: 'histWx',
-  initialState: histWxAdapter.getInitialState({
-    status: 'idle',
-    error: null,
-  }),
+  initialState: initialState,
   reducers: {},
   extraReducers: {
     [fetchStationData.pending]: (state, action) => {
-      state.status = 'loading';
+      state.stationsStatus = 'loading';
     },
     [fetchStationData.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
-      histWxAdapter.setAll(state, action.payload);
+      state.stationsStatus = 'succeeded';
+      state.stations = action.payload.meta;
+      state.stations.sort((a, b) =>
+        getMaxDayDiff(a.valid_daterange[0], b.valid_daterange[0])
+      );
     },
     [fetchStationData.rejected]: (state, action) => {
-      state.status = 'failed';
-      state.error = action.error.message;
+      state.stationsStatus = 'failed';
+      state.stationsError = action.error.message;
+    },
+    [fetchHistTemp.pending]: (state, action) => {
+      state.dataStatus = 'loading';
+    },
+    [fetchHistTemp.fulfilled]: (state, action) => {
+      state.dataStatus = 'succeeded';
+      state.data = action.payload;
+    },
+    [fetchHistTemp.rejected]: (state, action) => {
+      state.dataStatus = 'failed';
+      state.dataError = action.error.message;
     },
   },
 });
 
 export default histWxSlice.reducer;
 
-export const {
-  selectAll: selectAllStations,
-  selectById: selectStationById,
-  selectIds: selectAllStationIds,
-} = histWxAdapter.getSelectors((state) => state.histWx);
+export const selectStations = (state) => state.histWx.stations;
