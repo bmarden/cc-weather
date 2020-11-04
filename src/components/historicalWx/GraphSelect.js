@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchHistTemp, fetchStationData } from './histWxSlice';
+import { fetchStationData, fetchHistTemp } from './histWxSlice';
 
-const Historical = () => {
+const GraphSelect = () => {
   const dispatch = useDispatch();
   const place = useSelector((state) => state.place);
   const stations = useSelector((state) => state.histWx.stations);
@@ -19,7 +19,7 @@ const Historical = () => {
     }
   }, [stations, dispatch]);
 
-  return <div>Historical </div>;
+  return <div>Graph Select</div>;
 };
 
-export default Historical;
+export default GraphSelect;

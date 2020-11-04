@@ -4,7 +4,7 @@ import { Container, Row, Jumbotron } from 'react-bootstrap';
 import CurWeather from './components/currentWx/CurWeather';
 import Navigation from './app/Navigation';
 import HourlyForecast from './components/hourlyWx/HourlyForecast';
-import Historical from './components/historicalWx/Historical';
+import GraphSelect from './components/historicalWx/GraphSelect';
 
 const App = () => {
   return (
@@ -19,7 +19,7 @@ const App = () => {
               <HourlyForecast />
             </Row>
           </Jumbotron>
-          <Historical />
+          <GraphSelect />
         </Container>
       </div>
     </div>
