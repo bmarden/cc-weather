@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { differenceInDays, format, subMonths } from 'date-fns';
+import _ from 'lodash';
 import acis from '../../api/acis';
 
 // Return the largest date range for sortComparer function to sort ids
@@ -26,13 +27,13 @@ export const fetchHistTemp = createAsyncThunk(
   'histWx/fetchHistTemp',
   async (_, { getState }) => {
     const stations = selectStations(getState());
-    console.log(stations);
     let form = new FormData();
     form.append('sid', stations[0].sids[0]);
     // subtract 12 months from todays date as a start date to get data
     form.append('sdate', format(subMonths(new Date(), 12), 'yyyy-MM-dd'));
     form.append('edate', format(new Date(), 'yyyy-MM-dd'));
-    form.append('elems', ['maxt', 'mint']);
+    form.append('elems', ['maxt', 'mint', 'avgt']);
+    form.append('meta', []);
     const response = await acis.post('/StnData', form);
     return response.data;
   }
@@ -40,11 +41,11 @@ export const fetchHistTemp = createAsyncThunk(
 
 const initialState = {
   stations: [],
-  data: [],
+  tempData: [],
   stationsStatus: 'idle',
   stationsError: null,
-  dataStatus: 'idle',
-  dataError: null,
+  tempDataStatus: 'idle',
+  tempDataError: null,
 };
 
 const histWxSlice = createSlice({
@@ -71,7 +72,13 @@ const histWxSlice = createSlice({
     },
     [fetchHistTemp.fulfilled]: (state, action) => {
       state.dataStatus = 'succeeded';
-      state.data = action.payload;
+      // Keys to map the return data from API to
+      const keys = ['date', 'maxt', 'mint', 'avgt'];
+      // Maps each nested array to the keys array above and filters out days with missing data
+      state.tempData = _.chain(action.payload.tempData)
+        .filter((item) => !item.includes('M'))
+        .map((arr) => _.zipObject(keys, arr))
+        .value();
     },
     [fetchHistTemp.rejected]: (state, action) => {
       state.dataStatus = 'failed';
