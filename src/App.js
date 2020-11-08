@@ -5,6 +5,7 @@ import CurWeather from './components/currentWx/CurWeather';
 import Navigation from './app/Navigation';
 import HourlyForecast from './components/hourlyWx/HourlyForecast';
 import GraphSelect from './components/historicalWx/GraphSelect';
+import Historical from './components/historicalWx/Historical';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             </Row>
           </Jumbotron>
           <GraphSelect />
+          <Historical />
         </Container>
       </div>
     </div>
