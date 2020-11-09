@@ -1,37 +1,40 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchHistTemp, fetchStationData } from './histWxSlice';
+import { Spinner } from 'react-bootstrap';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const Historical = () => {
   const dispatch = useDispatch();
-  const place = useSelector((state) => state.place);
-  const stations = useSelector((state) => state.histWx.stations);
+  const tempData = useSelector((state) => state.histWx.tempData);
+  const tempDataStatus = useSelector((state) => state.histWx.tempDataStatus);
+  let options;
+  let content;
 
-  const options = {
-    title: {
-      text: 'My chart',
-    },
-    series: [
-      {
-        data: [1, 2, 3],
+  if (tempDataStatus === 'succeeded') {
+    const tData = tempData[1].map(Number);
+    console.log(tData);
+    options = {
+      title: {
+        text: 'My chart',
       },
-    ],
-  };
-  // useEffect(() => {
-  //   if (place[0]) {
-  //     dispatch(fetchStationData(place[0].bounds));
-  //   }
-  // }, [place, dispatch]);
+      series: [
+        {
+          name: 'Minimum Temperature',
+          data: tData,
+        },
+      ],
+    };
+    content = <HighchartsReact highcharts={Highcharts} options={options} />;
+  } else {
+    content = (
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
+  }
 
-  // useEffect(() => {
-  //   if (stations) {
-  //     dispatch(fetchHistTemp());
-  //   }
-  // }, [stations, dispatch]);
-
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  return <>{content}</>;
 };
 
 export default Historical;

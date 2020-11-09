@@ -68,20 +68,18 @@ const histWxSlice = createSlice({
       state.stationsError = action.error.message;
     },
     [fetchHistTemp.pending]: (state, action) => {
-      state.dataStatus = 'loading';
+      state.tempDataStatus = 'loading';
     },
     [fetchHistTemp.fulfilled]: (state, action) => {
-      state.dataStatus = 'succeeded';
-      // Keys to map the return data from API to
-      const keys = ['date', 'maxt', 'mint', 'avgt'];
-      // Maps each nested array to the keys array above and filters out days with missing data
-      state.tempData = _.chain(action.payload.tempData)
-        .filter((item) => !item.includes('M'))
-        .map((arr) => _.zipObject(keys, arr))
-        .value();
+      state.tempDataStatus = 'succeeded';
+      let filtered = _.filter(
+        action.payload.data,
+        (item) => !item.includes('M')
+      );
+      state.tempData = _.zip(...filtered);
     },
     [fetchHistTemp.rejected]: (state, action) => {
-      state.dataStatus = 'failed';
+      state.tempDataStatus = 'failed';
       state.dataError = action.error.message;
     },
   },
