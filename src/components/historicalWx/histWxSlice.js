@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { differenceInDays, format, subMonths } from 'date-fns';
+import {
+  differenceInDays,
+  format,
+  subMonths,
+  getUnixTime,
+  parseISO,
+} from 'date-fns';
 import _ from 'lodash';
 import acis from '../../api/acis';
 
@@ -48,6 +54,30 @@ const initialState = {
   tempDataError: null,
 };
 
+// Helper lodash functions to reformat data from ACIS
+_.mixin({
+  zipMod: (arrays) => {
+    return _.zip.apply(_, arrays);
+  },
+  unixDates: function (arrays) {
+    let dates = _.map(arrays[0], function (i) {
+      // Convert to milliseconds
+      return getUnixTime(parseISO(i)) * 1000;
+    });
+    arrays.shift();
+    let newArray = [];
+    arrays.forEach((arr) => {
+      let tmp = [];
+      arr.forEach((item, i) => {
+        let inner = _.concat(dates[i], parseInt(item, 10));
+        tmp.push(inner);
+      });
+      newArray.push(tmp);
+    });
+    return newArray;
+  },
+});
+
 const histWxSlice = createSlice({
   name: 'histWx',
   initialState: initialState,
@@ -72,11 +102,17 @@ const histWxSlice = createSlice({
     },
     [fetchHistTemp.fulfilled]: (state, action) => {
       state.tempDataStatus = 'succeeded';
-      let filtered = _.filter(
-        action.payload.data,
-        (item) => !item.includes('M')
-      );
-      state.tempData = _.zip(...filtered);
+      let filtered = _.chain(action.payload.data)
+        .filter((i) => !i.includes('M')) // Filter out dates with missing data
+        .zipMod() // Merge dates and all other data points into individual arrays
+        .unixDates() // Convert dates to unix time and include a date for each data point
+        .value();
+      state.tempData = filtered;
+      // let filtered = _.filter(
+      //   action.payload.data,
+      //   (item) => !item.includes('M')
+      // );
+      // state.tempData = _.zip(...filtered);
     },
     [fetchHistTemp.rejected]: (state, action) => {
       state.tempDataStatus = 'failed';

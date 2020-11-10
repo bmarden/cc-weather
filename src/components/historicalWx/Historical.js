@@ -1,22 +1,30 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const Historical = () => {
-  const dispatch = useDispatch();
   const tempData = useSelector((state) => state.histWx.tempData);
   const tempDataStatus = useSelector((state) => state.histWx.tempDataStatus);
   let options;
   let content;
 
   if (tempDataStatus === 'succeeded') {
-    const tData = tempData[1].map(Number);
-    console.log(tData);
+    const tData = tempData[1];
     options = {
       title: {
-        text: 'My chart',
+        text: 'Temperature Chart',
+      },
+      xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: {
+          month: '%e. %b',
+          year: '%b',
+        },
+        title: {
+          text: 'Date',
+        },
       },
       series: [
         {
