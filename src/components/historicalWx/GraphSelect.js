@@ -4,12 +4,12 @@ import { fetchStationData, fetchHistTemp } from './histWxSlice';
 
 const GraphSelect = () => {
   const dispatch = useDispatch();
-  const place = useSelector((state) => state.place);
+  const place = useSelector((state) => state.search.place);
   const stations = useSelector((state) => state.histWx.stations);
 
   useEffect(() => {
-    if (place[0]) {
-      dispatch(fetchStationData(place[0].bounds));
+    if (place) {
+      dispatch(fetchStationData(place.bounds));
     }
   }, [place, dispatch]);
 

@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import useScript from '../../common/hooks/useScript';
 
 import { fetchCurWx } from '../currentWx/currentWxSlice';
-import { updatedPlace } from './searchSlice';
+import { updatePlace } from './searchSlice';
 import './Search.css';
 /* global google */
 
@@ -53,7 +53,7 @@ const Search = () => {
         bounds: bounds,
       };
 
-      dispatch(updatedPlace(placeObject));
+      dispatch(updatePlace(placeObject));
     },
     [dispatch]
   );

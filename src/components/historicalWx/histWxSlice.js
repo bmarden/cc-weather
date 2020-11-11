@@ -116,7 +116,7 @@ const histWxSlice = createSlice({
     },
     [fetchHistTemp.rejected]: (state, action) => {
       state.tempDataStatus = 'failed';
-      state.dataError = action.error.message;
+      state.tempDataError = action.error.message;
     },
   },
 });

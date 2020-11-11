@@ -8,7 +8,7 @@ export default configureStore({
   reducer: {
     currentWx: currentWxReducer,
     hourlyWx: hourlyWxReducer,
-    place: searchReducer,
+    search: searchReducer,
     histWx: historicalWxReducer,
   },
 });
