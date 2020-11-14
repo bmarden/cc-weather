@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Spinner } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -11,38 +11,57 @@ const Historical = () => {
   let content;
 
   if (tempDataStatus === 'succeeded') {
-    const tData = tempData[1];
+    const maxTempData = tempData[0];
+    const minTempData = tempData[1];
+    const avgTempData = tempData[2];
+
     options = {
       title: {
         text: 'Temperature Chart',
       },
       xAxis: {
         type: 'datetime',
-        dateTimeLabelFormats: {
-          month: '%e. %b',
-          year: '%b',
-        },
         title: {
           text: 'Date',
+        },
+      },
+      yAxis: {
+        title: {
+          text: 'Temperature in Fahrenheit',
         },
       },
       series: [
         {
           name: 'Minimum Temperature',
-          data: tData,
+          data: minTempData,
+          color: '#34a4eb',
+        },
+        {
+          name: 'Maximum Temperature',
+          data: maxTempData,
+          color: '#eb5934',
+        },
+        {
+          name: 'Average Temperature',
+          data: avgTempData,
+          color: '#27a81e',
         },
       ],
     };
     content = <HighchartsReact highcharts={Highcharts} options={options} />;
   } else {
     content = (
-      <Spinner animation="border" role="status">
+      <Spinner animation="grow" role="status">
         <span className="sr-only">Loading...</span>
       </Spinner>
     );
   }
 
-  return <>{content}</>;
+  return (
+    <>
+      <Container>{content}</Container>
+    </>
+  );
 };
 
 export default Historical;
