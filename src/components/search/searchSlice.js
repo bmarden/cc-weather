@@ -7,9 +7,10 @@ const initialState = {
 };
 const searchSlice = createSlice({
   name: 'search',
-  initialState: {},
+  initialState: initialState,
   reducers: {
     updatePlace: (state, action) => {
+      state.status = 'loaded';
       state.place = action.payload;
     },
   },
