@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   differenceInDays,
@@ -64,8 +65,11 @@ _.mixin({
       // Convert to milliseconds
       return getUnixTime(parseISO(i)) * 1000;
     });
+    // Exclude the dates array from main array
     arrays.shift();
     let newArray = [];
+    // For each weather stat returned - Merge the date and stat so each data
+    // point has date associated with it
     arrays.forEach((arr) => {
       let tmp = [];
       arr.forEach((item, i) => {
@@ -108,11 +112,6 @@ const histWxSlice = createSlice({
         .unixDates() // Convert dates to unix time and include a date for each data point
         .value();
       state.tempData = filtered;
-      // let filtered = _.filter(
-      //   action.payload.data,
-      //   (item) => !item.includes('M')
-      // );
-      // state.tempData = _.zip(...filtered);
     },
     [fetchHistTemp.rejected]: (state, action) => {
       state.tempDataStatus = 'failed';
