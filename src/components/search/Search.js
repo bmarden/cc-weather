@@ -83,8 +83,7 @@ const Search = () => {
   // Load initial location on page load
   useEffect(() => {
     if (placeStatus === 'idle') {
-      console.log('Places is idle, calling handleSelect');
-      handleSelect('Chico, CA, USA');
+      handleSelect('San Francisco, CA, USA');
     }
   }, [handleSelect, placeStatus]);
 
