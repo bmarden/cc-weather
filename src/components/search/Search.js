@@ -105,7 +105,12 @@ const Search = () => {
 
   return (
     <Combobox onSelect={handleSelect} aria-labelledby="search">
-      <ComboboxInput value={value} onChange={handleInput} disabled={!ready} />
+      <ComboboxInput
+        value={value}
+        onChange={handleInput}
+        disabled={!ready}
+        selectOnClick={true}
+      />
       <ComboboxPopover>
         <ComboboxList>{status === 'OK' && renderSuggestions()} </ComboboxList>
       </ComboboxPopover>

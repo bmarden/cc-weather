@@ -11,10 +11,17 @@ import _ from 'lodash';
 import acis from '../../api/acis';
 
 // Return the largest date range for sortComparer function to sort ids
-const getMaxDayDiff = (range1, range2) => {
-  const range1Diff = differenceInDays(new Date(range1[1]), new Date(range1[0]));
-  const range2Diff = differenceInDays(new Date(range2[1]), new Date(range2[0]));
-  return range1Diff < range2Diff ? 1 : -1;
+const getMaxDayDiff = (stn1, stn2) => {
+  const stn1Recency = differenceInDays(new Date(), new Date(stn1[1]));
+  const stn2Recency = differenceInDays(new Date(), new Date(stn2[1]));
+  const recency = stn1Recency - stn2Recency;
+  if (recency !== 0) {
+    return recency;
+  }
+  const stn1Coverage = differenceInDays(new Date(stn1[1]), new Date(stn1[0]));
+  const stn2Coverage = differenceInDays(new Date(stn2[1]), new Date(stn2[0]));
+  const coverage = Math.abs(stn1Coverage - stn2Coverage);
+  return coverage;
 };
 
 export const fetchStationData = createAsyncThunk(
