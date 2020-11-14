@@ -24,7 +24,7 @@ const CurWeather = () => {
   let content;
   if (curWxStatus === 'loading') {
     content = (
-      <Spinner animation="border" role="status">
+      <Spinner animation="grow" role="status">
         <span className="sr-only">Loading...</span>
       </Spinner>
     );

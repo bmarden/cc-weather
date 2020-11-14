@@ -25,7 +25,7 @@ const HourlyForecast = () => {
 
   if (hourlyWxStatus === 'loading' || hourlyWxStatus === 'idle') {
     content = (
-      <Spinner animation="border" role="status">
+      <Spinner animation="grow" role="status">
         <span className="sr-only">Loading...</span>
       </Spinner>
     );

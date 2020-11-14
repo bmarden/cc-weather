@@ -5,14 +5,13 @@ import CurWeather from './components/currentWx/CurWeather';
 import Navigation from './app/Navigation';
 import HourlyForecast from './components/hourlyWx/HourlyForecast';
 import GraphSelect from './components/historicalWx/GraphSelect';
-import Historical from './components/historicalWx/Historical';
 
 const App = () => {
   return (
     <div>
       <Navigation />
       <div>
-        <Container>
+        <Container fluid="lg">
           <Jumbotron id="jumbo-weather">
             <h1>CC Weather</h1>
             <Row>
@@ -21,7 +20,6 @@ const App = () => {
             </Row>
           </Jumbotron>
           <GraphSelect />
-          <Historical />
         </Container>
       </div>
     </div>
