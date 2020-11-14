@@ -4,7 +4,7 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["react", "prettier"],
+  "plugins": ["react", "prettier", "react-hooks"],
   "env": {
     "browser": true,
     "jasmine": true,
@@ -12,7 +12,9 @@
   },
   "rules": {
     "prettier/prettier": ["error", { "singleQuote": true }],
-    "eqeqeq": 1
+    "eqeqeq": 1,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "settings": {
     "react": {
