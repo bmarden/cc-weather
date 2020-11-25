@@ -6,7 +6,7 @@ import {
   NavItem,
   DropdownButton,
   OverlayTrigger,
-  Tooltip,
+  Popover,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStationData, fetchHistTemp } from './histWxSlice';
@@ -29,20 +29,21 @@ const GraphSelect = () => {
     }
   }, [stations, dispatch]);
 
-  const renderTooltip = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Simple tooltip
-    </Tooltip>
-  );
-
   const renderStations = () => {
     if (stations) {
       const items = stations.map((stn) => (
         <OverlayTrigger
           key={stn.uid}
           placement="left"
-          delay={{ show: 250, hide: 400 }}
-          overlay={renderTooltip}
+          overlay={
+            <Popover id="popover-basic">
+              <Popover.Title as="h3">Station Data</Popover.Title>
+              <Popover.Content>
+                Date Range: {stn.valid_daterange[0][0]} -{' '}
+                {stn.valid_daterange[0][1]}
+              </Popover.Content>
+            </Popover>
+          }
         >
           <Dropdown.Item key={stn.uid}>{stn.name.toLowerCase()}</Dropdown.Item>
         </OverlayTrigger>
