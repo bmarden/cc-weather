@@ -47,10 +47,10 @@ export const fetchStationData = createAsyncThunk(
 
 export const fetchHistTemp = createAsyncThunk(
   'histWx/fetchHistTemp',
-  async (_, { getState }) => {
+  async (stnId, { getState }) => {
     const stations = selectStations(getState());
     let form = new FormData();
-    form.append('sid', stations[0].sids[0]);
+    form.append('sid', stnId);
     // subtract 12 months from todays date as a start date to get data
     form.append('sdate', format(subMonths(new Date(), 12), 'yyyy-MM-dd'));
     form.append('edate', format(new Date(), 'yyyy-MM-dd'));

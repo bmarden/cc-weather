@@ -17,21 +17,32 @@ import Historical from '../historicalWx/Historical';
 
 const GraphSelect = () => {
   const dispatch = useDispatch();
-  const [station, setStation] = useState('initialState');
+  const [station, setStation] = useState('');
   const search = useSelector((state) => state.search);
   const stations = useSelector((state) => state.histWx.stations);
+  const stationsStatus = useSelector((state) => state.histWx.stationsStatus);
 
+  // As soon as the search object from Places Autocomplete has a value, dispatch the API call
+  // to get station data
   useEffect(() => {
     if (search.status === 'loaded') {
       dispatch(fetchStationData(search.place.bounds));
     }
   }, [search, dispatch]);
 
+  // When station data has been received, get temperature data and set current station
   useEffect(() => {
-    if (stations) {
-      dispatch(fetchHistTemp());
+    if (stationsStatus === 'succeeded') {
+      setStation(compose(startCase, toLower)(stations[0].name));
+      dispatch(fetchHistTemp(stations[0].sids[0]));
     }
-  }, [stations, dispatch]);
+  }, [stationsStatus, stations, dispatch]);
+
+  const handleStationSelect = (e) => {
+    setStation(e.target.textContent);
+    console.log(e.target.value);
+    dispatch(fetchHistTemp(e.target.value));
+  };
 
   // Display a tooltip on each station with details
   const renderStations = () => {
@@ -57,7 +68,8 @@ const GraphSelect = () => {
           <Dropdown.Item
             as="button"
             key={stn.uid}
-            onClick={(e) => setStation(e.target.textContent)}
+            value={stn.sids[0]}
+            onClick={handleStationSelect}
           >
             {compose(startCase, toLower)(stn.name)}
           </Dropdown.Item>
