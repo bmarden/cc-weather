@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   Dropdown,
@@ -9,11 +9,15 @@ import {
   Popover,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import startCase from 'lodash/fp/startCase';
+import compose from 'lodash/fp/compose';
+import toLower from 'lodash/fp/toLower';
 import { fetchStationData, fetchHistTemp } from './histWxSlice';
 import Historical from '../historicalWx/Historical';
 
 const GraphSelect = () => {
   const dispatch = useDispatch();
+  const [station, setStation] = useState('initialState');
   const search = useSelector((state) => state.search);
   const stations = useSelector((state) => state.histWx.stations);
 
@@ -29,6 +33,7 @@ const GraphSelect = () => {
     }
   }, [stations, dispatch]);
 
+  // Display a tooltip on each station with details
   const renderStations = () => {
     if (stations) {
       const items = stations.map((stn) => (
@@ -39,13 +44,23 @@ const GraphSelect = () => {
             <Popover id="popover-basic">
               <Popover.Title as="h3">Station Data</Popover.Title>
               <Popover.Content>
-                Date Range: {stn.valid_daterange[0][0]} -{' '}
-                {stn.valid_daterange[0][1]}
+                <strong>Date Range: </strong>
+                {stn.valid_daterange[0][0]} - {stn.valid_daterange[0][1]}
+                <br />
+                <strong>Elevation:</strong> {stn.elev} feet
+                <br />
+                <strong>Lat/Lng:</strong> {stn.ll[1]}, {stn.ll[0]}
               </Popover.Content>
             </Popover>
           }
         >
-          <Dropdown.Item key={stn.uid}>{stn.name.toLowerCase()}</Dropdown.Item>
+          <Dropdown.Item
+            as="button"
+            key={stn.uid}
+            onClick={(e) => setStation(e.target.textContent)}
+          >
+            {compose(startCase, toLower)(stn.name)}
+          </Dropdown.Item>
         </OverlayTrigger>
       ));
       return items;
@@ -65,13 +80,15 @@ const GraphSelect = () => {
           <Nav.Item>
             <Nav.Link href="#yearly">By Year</Nav.Link>
           </Nav.Item>
-          <DropdownButton className="ml-auto" title="stations" as={NavItem}>
+          <DropdownButton className="ml-auto" title="Stations" as={NavItem}>
             {renderStations()}
           </DropdownButton>
         </Nav>
       </Card.Header>
       <Card.Body>
-        <Card.Title>Historical Data</Card.Title>
+        <Card.Title>
+          <strong>Weather Station:</strong> {station}{' '}
+        </Card.Title>
         <Historical />
       </Card.Body>
     </Card>

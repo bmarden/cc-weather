@@ -29,7 +29,15 @@ export const fetchStationData = createAsyncThunk(
   async (args) => {
     let form = new FormData();
     form.append('bbox', `${args}`);
-    form.append('meta', ['name', 'sids', 'uid', 'valid_daterange']);
+    form.append('meta', [
+      'name',
+      'sids',
+      'uid',
+      'valid_daterange',
+      'll',
+      'elev',
+      'sid_dates',
+    ]);
     form.append('elems', ['maxt', 'mint']);
     form.append('sdate', format(new Date(), 'yyyy-MM-dd'));
     const response = await acis.post('/StnMeta', form);
