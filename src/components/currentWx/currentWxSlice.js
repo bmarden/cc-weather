@@ -24,6 +24,7 @@ const currentWxSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    // eslint-disable-next-line no-unused-vars
     [fetchCurWx.pending]: (state, action) => {
       state.status = 'loading';
     },

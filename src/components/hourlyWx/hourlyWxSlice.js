@@ -35,6 +35,7 @@ const hourlyWxSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    // eslint-disable-next-line no-unused-vars
     [fetchHourlyWx.pending]: (state, action) => {
       state.status = 'loading';
     },
