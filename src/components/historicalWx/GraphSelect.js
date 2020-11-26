@@ -8,6 +8,7 @@ import {
   OverlayTrigger,
   Popover,
 } from 'react-bootstrap';
+import { subMonths, format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import startCase from 'lodash/fp/startCase';
 import compose from 'lodash/fp/compose';
@@ -22,6 +23,15 @@ const GraphSelect = () => {
   const stations = useSelector((state) => state.histWx.stations);
   const stationsStatus = useSelector((state) => state.histWx.stationsStatus);
 
+  // Build the parameter object to pass to ACIS
+  const histParams = {
+    sid: '',
+    sdate: format(subMonths(new Date(), 12), 'yyyy-MM-dd'),
+    edate: format(new Date(), 'yyyy-MM-dd'),
+    elems: ['maxt', 'mint', 'avgt'],
+    meta: [],
+  };
+
   // As soon as the search object from Places Autocomplete has a value, dispatch the API call
   // to get station data
   useEffect(() => {
@@ -30,18 +40,22 @@ const GraphSelect = () => {
     }
   }, [search, dispatch]);
 
-  // When station data has been received, get temperature data and set current station
+  /* Dispatch for historical data by day */
   useEffect(() => {
     if (stationsStatus === 'succeeded') {
+      // Set station to the first in the list
       setStation(compose(startCase, toLower)(stations[0].name));
-      dispatch(fetchHistTemp(stations[0].sids[0]));
+      histParams.sid = stations[0].sids[0];
+      dispatch(fetchHistTemp(histParams));
     }
-  }, [stationsStatus, stations, dispatch]);
+  }, [stationsStatus, histParams, dispatch]);
 
+  // Set station and dispatch fetchHistTemp to get new historical data
   const handleStationSelect = (e) => {
     setStation(e.target.textContent);
-    console.log(e.target.value);
-    dispatch(fetchHistTemp(e.target.value));
+    const params = histParams;
+    params.sid = e.target.value;
+    dispatch(fetchHistTemp(params));
   };
 
   // Display a tooltip on each station with details

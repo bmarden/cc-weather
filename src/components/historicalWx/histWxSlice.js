@@ -1,12 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  differenceInDays,
-  format,
-  subMonths,
-  getUnixTime,
-  parseISO,
-} from 'date-fns';
+import { differenceInDays, format, getUnixTime, parseISO } from 'date-fns';
 import _ from 'lodash';
 import acis from '../../api/acis';
 
@@ -47,15 +41,11 @@ export const fetchStationData = createAsyncThunk(
 
 export const fetchHistTemp = createAsyncThunk(
   'histWx/fetchHistTemp',
-  async (stnId, { getState }) => {
-    const stations = selectStations(getState());
+  async (histParams) => {
     let form = new FormData();
-    form.append('sid', stnId);
-    // subtract 12 months from todays date as a start date to get data
-    form.append('sdate', format(subMonths(new Date(), 12), 'yyyy-MM-dd'));
-    form.append('edate', format(new Date(), 'yyyy-MM-dd'));
-    form.append('elems', ['maxt', 'mint', 'avgt']);
-    form.append('meta', []);
+    for (let [key, value] of Object.entries(histParams)) {
+      form.append(key, value);
+    }
     const response = await acis.post('/StnData', form);
     return response.data;
   }
