@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Col, Accordion, Container, Row, Card } from 'react-bootstrap';
 import { selectHourById } from './hourlyWxSlice';
 import { convertUnixTime, capitalizeFirstChar } from '../../common/utils';
-import { propTypes } from 'react-bootstrap/esm/Image';
+import PropTypes from 'prop-types';
 
 const ForecastItem = ({ hourWxId }) => {
   // Get data for the hour at hourWxId
@@ -64,7 +64,7 @@ const ForecastItem = ({ hourWxId }) => {
 };
 
 ForecastItem.propTypes = {
-  hourWxId: propTypes.number,
+  hourWxId: PropTypes.number,
 };
 
 export default ForecastItem;
