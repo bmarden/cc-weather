@@ -6,16 +6,10 @@ jobs:
       - node/install-packages:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
-      - run: npm run test
-  lint:
-    steps:
-      - checkout
-      - node/install-packages:
-          cache-path: ~/project/node_modules
-          override-ci-command: npm install
       - run: npm run lint
+      - run: npm run test
 orbs:
-  node: circleci/node@x.y
+  node: circleci/node@4.1.0
 version: 2.1
 workflows:
   test_my_app:
