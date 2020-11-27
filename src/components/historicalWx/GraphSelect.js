@@ -18,19 +18,11 @@ import Historical from '../historicalWx/Historical';
 
 const GraphSelect = () => {
   const dispatch = useDispatch();
-  const [station, setStation] = useState('');
+  const [stnIndex, setStnIndex] = useState(-1); // Initialize to -1 to control undefined reference on load
+  const [selectedNav, setSelectedNav] = useState('daily');
   const search = useSelector((state) => state.search);
   const stations = useSelector((state) => state.histWx.stations);
   const stationsStatus = useSelector((state) => state.histWx.stationsStatus);
-
-  // Build the parameter object to pass to ACIS
-  const histParams = {
-    sid: '',
-    sdate: format(subMonths(new Date(), 12), 'yyyy-MM-dd'),
-    edate: format(new Date(), 'yyyy-MM-dd'),
-    elems: ['maxt', 'mint', 'avgt'],
-    meta: [],
-  };
 
   // As soon as the search object from Places Autocomplete has a value, dispatch the API call
   // to get station data
@@ -44,24 +36,58 @@ const GraphSelect = () => {
   useEffect(() => {
     if (stationsStatus === 'succeeded') {
       // Set station to the first in the list
-      setStation(compose(startCase, toLower)(stations[0].name));
-      histParams.sid = stations[0].sids[0];
+      setStnIndex(0);
+      let histParams = {
+        sid: stations[0].sids[0],
+        sdate: format(subMonths(new Date(), 12), 'yyyy-MM-dd'),
+        edate: format(new Date(), 'yyyy-MM-dd'),
+        elems: ['maxt', 'mint', 'avgt'],
+        meta: [],
+      };
       dispatch(fetchHistTemp(histParams));
     }
-  }, [stationsStatus, histParams, dispatch]);
+  }, [stationsStatus, stations, dispatch]);
 
-  // Set station and dispatch fetchHistTemp to get new historical data
+  // Set station and call handleNavSelect to dispatch fetchHistTemp with correct date interval
   const handleStationSelect = (e) => {
-    setStation(e.target.textContent);
-    const params = histParams;
-    params.sid = e.target.value;
-    dispatch(fetchHistTemp(params));
+    setStnIndex(e.target.value);
+    handleNavSelect(selectedNav);
+  };
+
+  // Set the parameters according to which nav item the user has selected and dispatch
+  // to get historical data
+  const handleNavSelect = async (navItem) => {
+    let histParams = {
+      sid: stations[stnIndex].sids[0],
+      meta: [],
+    };
+    setSelectedNav(navItem);
+    switch (navItem) {
+      case 'daily':
+        histParams.elems = ['maxt', 'mint', 'avgt'];
+        histParams.sdate = format(subMonths(new Date(), 12), 'yyyy-MM-dd');
+        histParams.edate = format(new Date(), 'yyyy-MM-dd');
+        break;
+      case 'monthly':
+        histParams.elems = 'mly_max_maxt,mly_min_mint,mly_mean_avgt';
+        histParams.sdate = format(subMonths(new Date(), 12), 'yyyy-MM');
+        histParams.edate = format(new Date(), 'yyyy-MM');
+        break;
+      case 'yearly':
+        histParams.elems = 'mly_max_maxt,mly_min_mint,mly_mean_avgt';
+        histParams.sdate = format(subMonths(new Date(), 12), 'yyyy-MM');
+        histParams.edate = format(new Date(), 'yyyy-MM');
+        break;
+      default:
+        break;
+    }
+    dispatch(fetchHistTemp(histParams));
   };
 
   // Display a tooltip on each station with details
   const renderStations = () => {
     if (stations) {
-      const items = stations.map((stn) => (
+      const items = stations.map((stn, index) => (
         <OverlayTrigger
           key={stn.uid}
           placement="left"
@@ -82,7 +108,7 @@ const GraphSelect = () => {
           <Dropdown.Item
             as="button"
             key={stn.uid}
-            value={stn.sids[0]}
+            value={index}
             onClick={handleStationSelect}
           >
             {compose(startCase, toLower)(stn.name)}
@@ -96,15 +122,25 @@ const GraphSelect = () => {
   return (
     <Card>
       <Card.Header>
-        <Nav variant="pills" defaultActiveKey="#daily">
+        <Nav
+          variant="pills"
+          defaultActiveKey="daily"
+          onSelect={handleNavSelect}
+        >
           <Nav.Item>
-            <Nav.Link href="#daily">By Day</Nav.Link>
+            <Nav.Link eventKey="daily" href="#daily">
+              By Day
+            </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="#monthly">By Month</Nav.Link>
+            <Nav.Link eventKey="monthly" href="#monthly">
+              By Month
+            </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="#yearly">By Year</Nav.Link>
+            <Nav.Link eventKey="yearly" href="#yearly">
+              By Year
+            </Nav.Link>
           </Nav.Item>
           <DropdownButton className="ml-auto" title="Stations" as={NavItem}>
             {renderStations()}
@@ -113,7 +149,10 @@ const GraphSelect = () => {
       </Card.Header>
       <Card.Body>
         <Card.Title>
-          <strong>Weather Station:</strong> {station}{' '}
+          <strong>Weather Station:</strong>{' '}
+          {stnIndex !== -1
+            ? compose(startCase, toLower)(stations[stnIndex].name)
+            : ''}{' '}
         </Card.Title>
         <Historical />
       </Card.Body>
