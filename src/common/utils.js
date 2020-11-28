@@ -20,3 +20,24 @@ export const expandLatLon = (coords) => {
   const neCoords = { lat: coords.lat + df, lon: coords.lon + dl };
   return [swCoords, neCoords];
 };
+
+export const iconMap = {
+  '01d': 'wi-day-sunny',
+  '01n': 'wi-night-clear',
+  '02d': 'wi-day-cloudy',
+  '02n': 'wi-night-alt-cloudy',
+  '03d': 'wi-cloud',
+  '03n': 'wi-cloud',
+  '04d': 'wi-cloudy',
+  '04n': 'wi-cloudy',
+  '09d': 'wi-showers',
+  '09n': 'wi-showers',
+  '10d': 'wi-day-rain',
+  '10n': 'wi-night-alt-rain',
+  '11d': 'wi-thunderstorm',
+  '11n': 'wi-thunderstorm',
+  '13d': 'wi-snowflake-cold',
+  '13n': 'wi-snowflake-cold',
+  '50d': 'wi-day-fog',
+  '50n': 'wi-night-fog',
+};

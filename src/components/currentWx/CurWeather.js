@@ -1,10 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Media, Col, Spinner } from 'react-bootstrap';
-import '../../packages/weather-icons/css/weather-icons.min.css';
-import '../../packages/weather-icons/css/weather-icons-wind.min.css';
 import { useEffect } from 'react';
-
+import { iconMap } from '../../common/utils';
 import './CurWeather.css';
 import { fetchCurWx } from '../currentWx/currentWxSlice';
 
@@ -31,12 +29,7 @@ const CurWeather = () => {
   } else if (curWxStatus === 'succeeded') {
     content = (
       <Media>
-        <img
-          width="120"
-          height="120"
-          src={`https://openweathermap.org/img/wn/${curWx.weather[0].icon}@2x.png`}
-          alt="Current condition"
-        />
+        <i className={`icon-cw-large wi ${iconMap[curWx.weather[0].icon]}`} />
         <Media.Body>
           <h2>
             {curWx.name} {Math.round(curWx.main.temp)} &#176; F
@@ -46,10 +39,7 @@ const CurWeather = () => {
             <li>Conditions: {curWx.weather[0].main}</li>
             <li>
               Wind:{' '}
-              <i
-                className={`wi wi-wind towards-${curWx.wind.deg}-deg`}
-                style={{ fontSize: '1.5em' }}
-              >
+              <i className={`icon-cw wi wi-wind from-${curWx.wind.deg}-deg`}>
                 &nbsp;
               </i>
               {curWx.wind.speed}

@@ -5,9 +5,20 @@ ul {
 
 li {
     font-size: 1.2em;
-
 }
 
+.icon-cw .icon-cw-large {
+    line-height: 1.2;
+    padding: 5px;
+    vertical-align: top;
+}
+
+.icon-cw {
+    font-size: 2em;
+}
+.icon-cw-large {
+    font-size: 5em;
+}
 #jumbo-weather {
     background: rgba(167, 167, 167, 0.815);
 }

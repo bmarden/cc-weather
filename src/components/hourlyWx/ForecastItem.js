@@ -2,7 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Col, Accordion, Container, Row, Card } from 'react-bootstrap';
 import { selectHourById } from './hourlyWxSlice';
-import { convertUnixTime, capitalizeFirstChar } from '../../common/utils';
+import {
+  convertUnixTime,
+  capitalizeFirstChar,
+  iconMap,
+} from '../../common/utils';
 import PropTypes from 'prop-types';
 
 const ForecastItem = ({ hourWxId }) => {
@@ -16,10 +20,11 @@ const ForecastItem = ({ hourWxId }) => {
           <Container>
             <Row>
               <Col md="3">
-                {' '}
                 <i
-                  className={`hf-icon wi wi-owm-${hourForecast.weather[0].id}`}
-                />{' '}
+                  className={`icon-hw wi ${
+                    iconMap[hourForecast.weather[0].icon]
+                  }`}
+                />
                 &nbsp; &nbsp;
                 <span className="hf-title">
                   {convertUnixTime(hourWxId)}
@@ -33,14 +38,14 @@ const ForecastItem = ({ hourWxId }) => {
               </Col>
               <Col md="3" className="text-center">
                 <span className="hf-title">Temp: </span>{' '}
-                <span className="hf-val">
-                  {Math.round(hourForecast.temp)} &#176;F{' '}
-                </span>
+                <span className="hf-val">{Math.round(hourForecast.temp)}</span>
+                <i className="icon-hw wi wi-fahrenheit" />
               </Col>
               <Col md="3">
                 <span className="hf-title">Feels like: </span>{' '}
                 <span className="hf-val">
-                  {Math.round(hourForecast.feels_like)} &#176;F{' '}
+                  {Math.round(hourForecast.feels_like)}
+                  <i className="icon-hw wi wi-fahrenheit" />
                 </span>
               </Col>
             </Row>

@@ -7,6 +7,9 @@
     font-size: 1.0em;
 }
 
-.hf-icon {
-    font-size: 1.2em;
+.icon-hw {
+    vertical-align: top;
+    font-size: 1.5em;
+    line-height: 1.2;
+    padding-left: 2px;
 }
