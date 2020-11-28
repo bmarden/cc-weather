@@ -4,7 +4,7 @@ import acisImg from './acis.png';
 
 const Footer = () => {
   return (
-    <Navbar bg="dark" variant="dark" sticky="bottom">
+    <Navbar bg="#1CB5E0" sticky="bottom">
       <Navbar.Brand href="http://www.rcc-acis.org/" target="_blank">
         Data Provided By: &nbsp;
         <img
