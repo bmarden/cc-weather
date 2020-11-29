@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
-import acisImg from './acis.png';
+import acisImg from '../assets/acis.png';
 
 const Footer = () => {
   return (
