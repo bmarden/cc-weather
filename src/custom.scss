@@ -4,12 +4,16 @@
 
 $dark-cornflower-blue: #023e8aff;
 $blue-green: #0096c7ff;
-$sky-blue-crayola: #90e0efff;
-$lime-green: #7fd14dff;
-$jade: #26a96cff;
+$rosso-corsa: #d00000;
+$selective-yellow: #ffba08;
+$gunmetal: #282c37;
 
 $theme-colors: (
-  "primary": $dark-cornflower-blue
+  "primary": $dark-cornflower-blue,
+  "danger": $rosso-corsa,
+  "warning": $selective-yellow,
 );
+
+$bg-dark: $gunmetal;
 
 @import "~bootstrap/scss/bootstrap";

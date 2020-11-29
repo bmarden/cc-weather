@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Media, Col, Spinner } from 'react-bootstrap';
+import { Media, Col, Spinner, Card } from 'react-bootstrap';
 import { useEffect } from 'react';
 import { iconMap } from '../../common/utils';
 import './CurWeather.css';
@@ -28,34 +28,35 @@ const CurWeather = () => {
     );
   } else if (curWxStatus === 'succeeded') {
     content = (
-      <Media>
-        <i className={`icon-cw-large wi ${iconMap[curWx.weather[0].icon]}`} />
-        <Media.Body>
-          <h2>
-            {curWx.name} {Math.round(curWx.main.temp)} &#176; F
-          </h2>
-          <ul>
-            <li>Feels like: {Math.round(curWx.main.feels_like)}&#176;F</li>
-            <li>Conditions: {curWx.weather[0].main}</li>
-            <li>
-              Wind:{' '}
-              <i className={`icon-cw wi wi-wind from-${curWx.wind.deg}-deg`}>
-                &nbsp;
-              </i>
-              {curWx.wind.speed}
-            </li>
-          </ul>
-        </Media.Body>
-      </Media>
+      <>
+        <Card.Title>Current weather in {curWx.name} </Card.Title>
+        <Media>
+          <i className={`icon-cw-large wi ${iconMap[curWx.weather[0].icon]}`} />
+          <Media.Body>
+            <h2>{Math.round(curWx.main.temp)} &#176; F</h2>
+            <ul>
+              <li>Feels like: {Math.round(curWx.main.feels_like)}&#176;F</li>
+              <li>Conditions: {curWx.weather[0].main}</li>
+              <li>
+                Wind:{' '}
+                <i className={`icon-cw wi wi-wind from-${curWx.wind.deg}-deg`}>
+                  &nbsp;
+                </i>
+                {curWx.wind.speed}
+              </li>
+            </ul>
+          </Media.Body>
+        </Media>
+      </>
     );
   } else {
     content = <p>Error loading content...</p>;
   }
 
   return (
-    <Col md="12" lg="4">
-      {content}
-    </Col>
+    <Card className="bg-t-dark mb-3 text-white-50">
+      <Card.Body>{content}</Card.Body>
+    </Card>
   );
 };
 
