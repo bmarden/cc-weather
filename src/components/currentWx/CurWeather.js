@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Media, Col, Spinner, Card } from 'react-bootstrap';
+import { Col, Row, Spinner, Card } from 'react-bootstrap';
 import { useEffect } from 'react';
 import { iconMap } from '../../common/utils';
 import './CurWeather.css';
@@ -29,24 +29,36 @@ const CurWeather = () => {
   } else if (curWxStatus === 'succeeded') {
     content = (
       <>
-        <Card.Title>Current weather in {curWx.name} </Card.Title>
-        <Media>
-          <i className={`icon-cw-large wi ${iconMap[curWx.weather[0].icon]}`} />
-          <Media.Body>
-            <h2>{Math.round(curWx.main.temp)} &#176; F</h2>
+        <Card.Title as="h3">Current weather in {curWx.name} </Card.Title>
+        <Row>
+          <Col md={3}>
+            <i
+              className={`icon-cw-large mb-3 wi ${
+                iconMap[curWx.weather[0].icon]
+              }`}
+            />
+            <h3>{curWx.weather[0].main}</h3>
+            <h2>{Math.round(curWx.main.temp)} &#176;F</h2>
+          </Col>
+          <Col md={9}>
             <ul>
               <li>Feels like: {Math.round(curWx.main.feels_like)}&#176;F</li>
-              <li>Conditions: {curWx.weather[0].main}</li>
+              <li>Humidity: {curWx.main.humidity}%</li>
+              <li>Pressure: {(curWx.main.pressure / 33.86).toFixed(2)} in</li>
               <li>
-                Wind:{' '}
-                <i className={`icon-cw wi wi-wind from-${curWx.wind.deg}-deg`}>
-                  &nbsp;
-                </i>
-                {curWx.wind.speed}
+                <div>
+                  <span>Wind:</span>
+                  <div className="icon-wrap">
+                    <i
+                      className={`icon-wind wi wi-wind from-${curWx.wind.deg}-deg`}
+                    ></i>
+                  </div>
+                  <span>{curWx.wind.speed}</span>
+                </div>
               </li>
             </ul>
-          </Media.Body>
-        </Media>
+          </Col>
+        </Row>
       </>
     );
   } else {
