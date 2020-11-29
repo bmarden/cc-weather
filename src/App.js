@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Jumbotron, Grid } from 'react-bootstrap';
+import { Container, Row, Jumbotron } from 'react-bootstrap';
 
 import CurWeather from './components/currentWx/CurWeather';
 import Navigation from './app/Navigation';
