@@ -5,13 +5,20 @@ jobs:
       - checkout
       - node/install-packages:
           cache-path: ~/project/node_modules
-          override-ci-command: npm install
       - run: npm run lint
       # - run: npm run test
 orbs:
+  heroku: circleci/heroku@x.y
   node: circleci/node@4.1.0
 version: 2.1
 workflows:
-  test_my_app:
+  test-and-deploy:
     jobs:
-      - test
+      - lint
+      - heroku/deploy-via-git:
+          filters:
+            branches:
+              only:
+                - master
+              requires:
+                - lint
