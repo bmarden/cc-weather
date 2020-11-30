@@ -1,10 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Media, Col, Spinner } from 'react-bootstrap';
-import '../../packages/weather-icons/css/weather-icons.min.css';
-import '../../packages/weather-icons/css/weather-icons-wind.min.css';
+import { Col, Row, Spinner, Card } from 'react-bootstrap';
 import { useEffect } from 'react';
-
+import { iconMap } from '../../common/utils';
 import './CurWeather.css';
 import { fetchCurWx } from '../currentWx/currentWxSlice';
 
@@ -30,42 +28,47 @@ const CurWeather = () => {
     );
   } else if (curWxStatus === 'succeeded') {
     content = (
-      <Media>
-        <img
-          width="120"
-          height="120"
-          src={`https://openweathermap.org/img/wn/${curWx.weather[0].icon}@2x.png`}
-          alt="Current condition"
-        />
-        <Media.Body>
-          <h2>
-            {curWx.name} {Math.round(curWx.main.temp)} &#176; F
-          </h2>
-          <ul>
-            <li>Feels like: {Math.round(curWx.main.feels_like)}&#176;F</li>
-            <li>Conditions: {curWx.weather[0].main}</li>
-            <li>
-              Wind:{' '}
-              <i
-                className={`wi wi-wind towards-${curWx.wind.deg}-deg`}
-                style={{ fontSize: '1.5em' }}
-              >
-                &nbsp;
-              </i>
-              {curWx.wind.speed}
-            </li>
-          </ul>
-        </Media.Body>
-      </Media>
+      <>
+        <Card.Title as="h3">Current weather in {curWx.name} </Card.Title>
+        <Row>
+          <Col md={3}>
+            <i
+              className={`icon-cw-large mb-3 wi ${
+                iconMap[curWx.weather[0].icon]
+              }`}
+            />
+            <h3>{curWx.weather[0].main}</h3>
+            <h2>{Math.round(curWx.main.temp)} &#176;F</h2>
+          </Col>
+          <Col md={9}>
+            <ul>
+              <li>Feels like: {Math.round(curWx.main.feels_like)}&#176;F</li>
+              <li>Humidity: {curWx.main.humidity}%</li>
+              <li>Pressure: {(curWx.main.pressure / 33.86).toFixed(2)} in</li>
+              <li>
+                <div>
+                  <span>Wind:</span>
+                  <div className="icon-wrap">
+                    <i
+                      className={`icon-wind wi wi-wind from-${curWx.wind.deg}-deg`}
+                    ></i>
+                  </div>
+                  <span>{curWx.wind.speed}</span>
+                </div>
+              </li>
+            </ul>
+          </Col>
+        </Row>
+      </>
     );
   } else {
     content = <p>Error loading content...</p>;
   }
 
   return (
-    <Col md="12" lg="4">
-      {content}
-    </Col>
+    <Card className="bg-t-dark mb-3 text-white-50">
+      <Card.Body>{content}</Card.Body>
+    </Card>
   );
 };
 

@@ -84,8 +84,9 @@ const Search = () => {
   useEffect(() => {
     if (placeStatus === 'idle') {
       handleSelect('San Francisco, CA, USA');
+      setValue('', false);
     }
-  }, [handleSelect, placeStatus]);
+  }, [handleSelect, placeStatus, setValue]);
 
   const renderSuggestions = () => {
     const suggestions = data.map(({ place_id, description }) => (
@@ -105,10 +106,12 @@ const Search = () => {
   return (
     <Combobox onSelect={handleSelect} aria-labelledby="search">
       <ComboboxInput
+        placeholder="Search for a city"
         value={value}
         onChange={handleInput}
         disabled={!ready}
         selectOnClick={true}
+        className="form-control search"
       />
       <ComboboxPopover>
         <ComboboxList>{status === 'OK' && renderSuggestions()} </ComboboxList>

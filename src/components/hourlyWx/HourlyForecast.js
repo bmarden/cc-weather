@@ -3,8 +3,6 @@ import { Accordion, Spinner, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './HourlyForecast.css';
-import '../../packages/weather-icons/css/weather-icons.min.css';
-import '../../packages/weather-icons/css/weather-icons-wind.min.css';
 
 import { fetchHourlyWx, selectAllHours } from './hourlyWxSlice';
 import ForecastItem from './ForecastItem';
