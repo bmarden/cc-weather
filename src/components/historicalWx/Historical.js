@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Spinner } from 'react-bootstrap';
-import Highcharts from 'highcharts';
+import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 
 const Historical = () => {
@@ -48,7 +48,13 @@ const Historical = () => {
         },
       ],
     };
-    content = <HighchartsReact highcharts={Highcharts} options={options} />;
+    content = (
+      <HighchartsReact
+        highcharts={Highcharts}
+        constructorType={'stockChart'}
+        options={options}
+      />
+    );
   } else {
     content = (
       <Spinner animation="grow" role="status">

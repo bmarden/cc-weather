@@ -122,6 +122,7 @@ const GraphSelect = () => {
   return (
     <Card>
       <Card.Header>
+        <h3>Historical Weather</h3>
         <Nav
           variant="pills"
           defaultActiveKey="daily"
