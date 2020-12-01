@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import usePlacesAutocomplete, { getGeocode } from 'use-places-autocomplete';
 import {
@@ -104,19 +105,25 @@ const Search = () => {
   };
 
   return (
-    <Combobox onSelect={handleSelect} aria-labelledby="search">
-      <ComboboxInput
-        placeholder="Search for a city"
-        value={value}
-        onChange={handleInput}
-        disabled={!ready}
-        selectOnClick={true}
-        className="form-control search"
-      />
-      <ComboboxPopover>
-        <ComboboxList>{status === 'OK' && renderSuggestions()} </ComboboxList>
-      </ComboboxPopover>
-    </Combobox>
+    <Container className="mt-3 mb-3">
+      <div className="d-flex justify-content-center">
+        <Combobox onSelect={handleSelect} aria-labelledby="search">
+          <ComboboxInput
+            placeholder="Search for a city"
+            value={value}
+            onChange={handleInput}
+            disabled={!ready}
+            selectOnClick={true}
+            className="form-control search"
+          />
+          <ComboboxPopover>
+            <ComboboxList>
+              {status === 'OK' && renderSuggestions()}{' '}
+            </ComboboxList>
+          </ComboboxPopover>
+        </Combobox>
+      </div>
+    </Container>
   );
 };
 

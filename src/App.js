@@ -7,25 +7,40 @@ import HourlyForecast from './components/hourlyWx/HourlyForecast';
 import GraphSelect from './components/historicalWx/GraphSelect';
 import Footer from './app/Footer';
 import Search from './components/search/Search';
+import About from './components/About';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import './App.css';
 
 const App = () => {
   return (
-    <div>
-      <Navigation />
-      <Container className="mt-3 mb-3">
-        <div className="d-flex justify-content-center">
-          <Search />
-        </div>
-      </Container>
-      <Container fluid="lg">
-        <CurWeather />
-        <Jumbotron className="bg-t-dark" id="jumbo-weather">
-          <Row>
-            <HourlyForecast />
-          </Row>
-        </Jumbotron>
-        <GraphSelect />
-      </Container>
+    <div className="page-container">
+      <div className="content-wrap">
+        <Router>
+          <Navigation />
+          <Container fluid="lg">
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={() => (
+                  <>
+                    <Search />
+                    <CurWeather />
+                    <GraphSelect />
+                  </>
+                )}
+              />
+              <Route exact path="/about" component={About} />
+              <Jumbotron className="bg-t-dark" id="jumbo-weather">
+                <Row>
+                  <HourlyForecast />
+                </Row>
+              </Jumbotron>
+            </Switch>
+          </Container>
+        </Router>
+      </div>
       <Footer />
     </div>
   );
