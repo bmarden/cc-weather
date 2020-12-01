@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import acisImg from '../assets/acis.png';
+import openwImg from '../assets/openw_logo.png';
 
 const Footer = () => {
   return (
@@ -11,7 +12,16 @@ const Footer = () => {
           alt="ACIS"
           title="ACIS"
           src={acisImg}
-          width="200"
+          width="150"
+          className="d-inline-block align-top"
+        ></img>
+      </Navbar.Brand>
+      <Navbar.Brand href="https://openweathermap.org" target="_blank">
+        <img
+          alt="openweathermap"
+          title="openweathermap"
+          src={openwImg}
+          width="150"
           className="d-inline-block align-top"
         ></img>
       </Navbar.Brand>
