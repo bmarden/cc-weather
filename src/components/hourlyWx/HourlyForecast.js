@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Accordion, Spinner, Col } from 'react-bootstrap';
+import { Accordion, Spinner, Col, Jumbotron, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './HourlyForecast.css';
@@ -37,9 +37,13 @@ const HourlyForecast = () => {
 
   return (
     <>
-      <Col lg="8">
-        <Accordion>{content}</Accordion>
-      </Col>
+      <Jumbotron className="bg-t-dark" id="jumbo-weather">
+        <Row>
+          <Col lg="8">
+            <Accordion>{content}</Accordion>
+          </Col>
+        </Row>
+      </Jumbotron>
     </>
   );
 };

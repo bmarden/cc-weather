@@ -31,12 +31,9 @@ const App = () => {
                   </>
                 )}
               />
+              <Route exact path="/hourly-weather" component={HourlyForecast} />
+              <Route exact path="/historical-weather" component={GraphSelect} />
               <Route exact path="/about" component={About} />
-              <Jumbotron className="bg-t-dark" id="jumbo-weather">
-                <Row>
-                  <HourlyForecast />
-                </Row>
-              </Jumbotron>
             </Switch>
           </Container>
         </Router>
