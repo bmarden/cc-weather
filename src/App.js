@@ -1,14 +1,15 @@
 import React from 'react';
-import { Container, Row, Jumbotron } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import CurWeather from './components/currentWx/CurWeather';
 import Navigation from './app/Navigation';
 import HourlyForecast from './components/hourlyWx/HourlyForecast';
-import GraphSelect from './components/historicalWx/GraphSelect';
+import Historical from './components/historicalWx/Historical';
 import Footer from './app/Footer';
 import Search from './components/search/Search';
 import About from './components/About';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Welcome from './components/Welcome';
 
 import './App.css';
 
@@ -26,13 +27,14 @@ const App = () => {
                 render={() => (
                   <>
                     <Search />
+                    <Welcome />
                     <CurWeather />
-                    <GraphSelect />
+                    <Historical />
                   </>
                 )}
               />
               <Route exact path="/hourly-weather" component={HourlyForecast} />
-              <Route exact path="/historical-weather" component={GraphSelect} />
+              <Route exact path="/historical-weather" component={Historical} />
               <Route exact path="/about" component={About} />
             </Switch>
           </Container>

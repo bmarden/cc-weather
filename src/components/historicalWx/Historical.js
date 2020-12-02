@@ -1,72 +1,49 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Container, Spinner } from 'react-bootstrap';
-import Highcharts from 'highcharts/highstock';
-import HighchartsReact from 'highcharts-react-official';
+import { Jumbotron, Form, Col } from 'react-bootstrap';
+import GraphSelect from './GraphSelect';
 
 const Historical = () => {
-  const tempData = useSelector((state) => state.histWx.tempData);
-  const tempDataStatus = useSelector((state) => state.histWx.tempDataStatus);
-  let options;
-  let content;
-
-  if (tempDataStatus === 'succeeded') {
-    const maxTempData = tempData[0];
-    const minTempData = tempData[1];
-    const avgTempData = tempData[2];
-
-    options = {
-      title: {
-        text: 'Temperature Chart',
-      },
-      xAxis: {
-        type: 'datetime',
-        title: {
-          text: 'Date',
-        },
-      },
-      yAxis: {
-        title: {
-          text: 'Temperature in Fahrenheit',
-        },
-      },
-      series: [
-        {
-          name: 'Minimum Temperature',
-          data: minTempData,
-          color: '#34a4eb',
-        },
-        {
-          name: 'Maximum Temperature',
-          data: maxTempData,
-          color: '#eb5934',
-        },
-        {
-          name: 'Average Temperature',
-          data: avgTempData,
-          color: '#27a81e',
-        },
-      ],
-    };
-    content = (
-      <HighchartsReact
-        highcharts={Highcharts}
-        constructorType={'stockChart'}
-        options={options}
-      />
-    );
-  } else {
-    content = (
-      <Spinner animation="grow" role="status">
-        <span className="sr-only">Loading...</span>
-      </Spinner>
-    );
-  }
-
   return (
-    <>
-      <Container>{content}</Container>
-    </>
+    <Jumbotron>
+      <h3 className="text-center">Historical Weather</h3>
+      <p>
+        Use the below controls to choose what historical data you want to view.
+        Data is initially loaded going back one year if available, but this can
+        vary depending on the weather stations available.
+      </p>
+      <p>
+        You can view a different weather station by using the stations dropdown.
+        The tooltip for each station will show some information about the
+        station including what dates that station has data for.
+      </p>
+      <Form>
+        <Form.Row className="justify-content-sm-around">
+          <Form.Group as={Col} xs={3}>
+            <Form.Label>Start Date</Form.Label>
+            <Form.Control type="date" />
+          </Form.Group>
+          <Form.Group as={Col} xs={3}>
+            <Form.Label>End Date</Form.Label>
+            <Form.Control type="date" placeholder="End Date"></Form.Control>
+          </Form.Group>
+          <Form.Group as={Col} xs={3}>
+            <Form.Label>Type</Form.Label>
+            <Form.Control
+              as="select"
+              className="mr-sm-2"
+              id="inlineFormCustomSelect"
+              custom
+            >
+              <option value="0">Choose...</option>
+              <option value="Temperature">Temperature</option>
+              <option value="Precipitation">Precipitation</option>
+              <option value="3">Three</option>
+            </Form.Control>
+          </Form.Group>
+        </Form.Row>
+      </Form>
+      <GraphSelect />
+    </Jumbotron>
   );
 };
 

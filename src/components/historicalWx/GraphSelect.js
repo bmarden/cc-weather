@@ -14,7 +14,7 @@ import startCase from 'lodash/fp/startCase';
 import compose from 'lodash/fp/compose';
 import toLower from 'lodash/fp/toLower';
 import { fetchStationData, fetchHistTemp } from './histWxSlice';
-import Historical from '../historicalWx/Historical';
+import TempGraph from '../historicalWx/TempGraph';
 
 const GraphSelect = () => {
   const dispatch = useDispatch();
@@ -122,7 +122,6 @@ const GraphSelect = () => {
   return (
     <Card>
       <Card.Header>
-        <h3>Historical Weather</h3>
         <Nav
           variant="pills"
           defaultActiveKey="daily"
@@ -155,7 +154,7 @@ const GraphSelect = () => {
             ? compose(startCase, toLower)(stations[stnIndex].name)
             : ''}{' '}
         </Card.Title>
-        <Historical />
+        <TempGraph />
       </Card.Body>
     </Card>
   );

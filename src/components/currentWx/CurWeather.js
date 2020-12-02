@@ -66,7 +66,7 @@ const CurWeather = () => {
   }
 
   return (
-    <Card className="bg-t-dark mb-3 text-white-50">
+    <Card className="mb-3 bg-gray">
       <Card.Body>{content}</Card.Body>
     </Card>
   );

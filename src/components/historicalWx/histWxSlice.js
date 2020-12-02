@@ -33,7 +33,8 @@ export const fetchStationData = createAsyncThunk(
       'sid_dates',
     ]);
     form.append('elems', ['maxt', 'mint']);
-    form.append('sdate', format(new Date(), 'yyyy-MM-dd'));
+    form.append('sdate', '1970-01-01');
+    form.append('edate', format(new Date(), 'yyyy-MM-dd'));
     const response = await acis.post('/StnMeta', form);
     return response.data;
   }
