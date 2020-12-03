@@ -8,15 +8,15 @@ import {
   OverlayTrigger,
   Popover,
 } from 'react-bootstrap';
-import { subMonths, format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import startCase from 'lodash/fp/startCase';
 import compose from 'lodash/fp/compose';
 import toLower from 'lodash/fp/toLower';
 import { fetchStationData, fetchHistTemp } from './histWxSlice';
 import TempGraph from '../historicalWx/TempGraph';
+import PropTypes from 'prop-types';
 
-const GraphSelect = () => {
+const GraphSelect = ({ chartArgs }) => {
   const dispatch = useDispatch();
   const [stnIndex, setStnIndex] = useState(-1); // Initialize to -1 to control undefined reference on load
   const [interval, setInterval] = useState('daily');
@@ -39,42 +39,38 @@ const GraphSelect = () => {
       setStnIndex(0);
       let histParams = {
         sid: stations[0].sids[0],
-        sdate: format(subMonths(new Date(), 12), 'yyyy-MM-dd'),
-        edate: format(new Date(), 'yyyy-MM-dd'),
+        sdate: chartArgs.startDate,
+        edate: chartArgs.endDate,
         elems: ['maxt', 'mint', 'avgt'],
         meta: [],
       };
       dispatch(fetchHistTemp(histParams));
     }
-  }, [stationsStatus, stations, dispatch]);
+  }, [stationsStatus, stations, chartArgs.startDate, chartArgs.endDate, dispatch]);
 
   // Set station and call handleNavSelect to dispatch fetchHistTemp with correct date interval
   const handleStationSelect = (e) => {
     setStnIndex(e.target.value);
-    handleNavSelect(interval);
+    handleChartUpdate(interval);
   };
 
-  // Set the parameters according to which nav item the user has selected and dispatch
-  // to get historical data
-  const handleNavSelect = async (navItem) => {
+  // Update the chart data when the user changes the station used or when they change the interval
+  // between data points
+  const handleChartUpdate = async (interval) => {
+    // Update interval state
+    setInterval(interval);
+    // Build the params for API
     let histParams = {
-      sid: stations[stnIndex].sids[0],
+      sid: stations[stnIndex].sids[0], // stnIndex will hold the most recent station selected by the user
+      sdate: chartArgs.startDate, // From parent component
+      edate: chartArgs.endDate, // From parent component
       meta: [],
     };
-    setInterval(navItem);
-    switch (navItem) {
-      case 'daily':
-        histParams.elems = ['maxt', 'mint', 'avgt'];
-        histParams.sdate = format(subMonths(new Date(), 12), 'yyyy-MM-dd');
-        histParams.edate = format(new Date(), 'yyyy-MM-dd');
-        break;
-      case 'monthly':
-        histParams.elems = 'mly_max_maxt,mly_min_mint,mly_mean_avgt';
-        histParams.sdate = format(subMonths(new Date(), 12), 'yyyy-MM');
-        histParams.edate = format(new Date(), 'yyyy-MM');
-        break;
-      default:
-        break;
+    // Set elems object based on selected interval
+    if (interval === 'daily') {
+      histParams.elems = ['maxt', 'mint', 'avgt'];
+    } else if (interval === 'monthly') {
+      histParams.elems = 'mly_max_maxt,mly_min_mint,mly_mean_avgt';
     }
     dispatch(fetchHistTemp(histParams));
   };
@@ -117,11 +113,7 @@ const GraphSelect = () => {
   return (
     <Card>
       <Card.Header>
-        <Nav
-          variant="pills"
-          defaultActiveKey="daily"
-          onSelect={handleNavSelect}
-        >
+        <Nav variant="pills" defaultActiveKey="daily" onSelect={handleChartUpdate}>
           <Nav.Item>
             <Nav.Link eventKey="daily" href="#daily">
               By Day
@@ -140,9 +132,7 @@ const GraphSelect = () => {
       <Card.Body>
         <Card.Title>
           <strong>Weather Station:</strong>{' '}
-          {stnIndex !== -1
-            ? compose(startCase, toLower)(stations[stnIndex].name)
-            : ''}{' '}
+          {stnIndex !== -1 ? compose(startCase, toLower)(stations[stnIndex].name) : ''}{' '}
         </Card.Title>
         <TempGraph />
       </Card.Body>
@@ -150,4 +140,7 @@ const GraphSelect = () => {
   );
 };
 
+GraphSelect.propTypes = {
+  chartArgs: PropTypes.object,
+};
 export default GraphSelect;

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { format, subMonths } from 'date-fns';
 import { Jumbotron, Form, Col, Button, Row } from 'react-bootstrap';
 import GraphSelect from './GraphSelect';
@@ -8,21 +8,31 @@ const Historical = () => {
     format(subMonths(new Date(), 12), 'yyyy-MM-dd')
   );
   const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+  const [chartType, setChartType] = useState('');
+  const [chartArgs, setChartArgs] = useState({
+    startDate: startDate,
+    endDate: endDate,
+    chartType: '',
+  });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setChartArgs({ startDate: startDate, endDate: endDate, chartType: chartType });
+  };
   return (
     <Jumbotron>
       <h3 className="text-center">Historical Weather</h3>
       <p>
-        Use the below controls to choose what historical data you want to view.
-        Data is initially loaded going back one year if available, but this can
-        vary depending on the weather stations available.
+        Use the below controls to choose what historical data you want to view. Data is
+        initially loaded going back one year if available, but this can vary depending on
+        the weather stations available.
       </p>
       <p>
-        You can view a different weather station by using the stations dropdown.
-        The tooltip for each station will show some information about the
-        station including what dates that station has data for.
+        You can view a different weather station by using the stations dropdown. The
+        tooltip for each station will show some information about the station including
+        what dates that station has data for.
       </p>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Row className="justify-content-sm-around">
           <Form.Group as={Col} xs={3}>
             <Form.Label>Start Date</Form.Label>
@@ -49,7 +59,7 @@ const Historical = () => {
             <Form.Control
               as="select"
               className="mr-sm-2"
-              id="inlineFormCustomSelect"
+              onChange={(e) => setChartType(e.target.value)}
               custom
             >
               <option value="0">Choose...</option>
@@ -58,18 +68,18 @@ const Historical = () => {
             </Form.Control>
           </Form.Group>
         </Form.Row>
+        <Row>
+          <Button
+            type="submit"
+            className="ml-auto mr-auto mb-3"
+            variant="success"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </Row>
       </Form>
-      <Row className="show-grid">
-        <Button
-          className="ml-auto mr-auto mb-3"
-          variant="success"
-          size="lg"
-          // onClick={handleSubmit}
-        >
-          Submit
-        </Button>
-      </Row>
-      <GraphSelect />
+      <GraphSelect chartArgs={chartArgs} />
     </Jumbotron>
   );
 };
