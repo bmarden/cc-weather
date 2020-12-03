@@ -25,12 +25,12 @@ const Historical = () => {
       <p>
         Use the below controls to choose what historical data you want to view. Data is
         initially loaded going back one year if available, but this can vary depending on
-        the weather stations available.
+        the weather station.
       </p>
       <p>
-        You can view a different weather station by using the stations dropdown. The
-        tooltip for each station will show some information about the station including
-        what dates that station has data for.
+        You can view a different weather station using the Stations dropdown. The tooltip
+        for each station will show some information about the station, including available
+        dates.
       </p>
       <Form onSubmit={handleSubmit}>
         <Form.Row className="justify-content-sm-around">

@@ -1,15 +1,15 @@
 .hf-title {
-    font-weight: 600;
-    font-size: 1.0em;
+  font-weight: 600;
+  font-size: 1em;
 }
 
 .hf-val {
-    font-size: 1.0em;
+  font-size: 1em;
 }
 
 .icon-hw {
-    vertical-align: top;
-    font-size: 1.5em;
-    line-height: 1.2;
-    padding-left: 2px;
+  vertical-align: top;
+  font-size: 1.5em;
+  line-height: 1.2;
+  padding-left: 2px;
 }

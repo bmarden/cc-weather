@@ -117,9 +117,7 @@ const Search = () => {
             className="form-control search"
           />
           <ComboboxPopover>
-            <ComboboxList>
-              {status === 'OK' && renderSuggestions()}{' '}
-            </ComboboxList>
+            <ComboboxList>{status === 'OK' && renderSuggestions()} </ComboboxList>
           </ComboboxPopover>
         </Combobox>
       </div>

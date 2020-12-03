@@ -1,9 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  createEntityAdapter,
-} from '@reduxjs/toolkit';
-
+import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import openw from '../../api/openw';
 
 // Use reduxjs/toolkit to normalize data in the store

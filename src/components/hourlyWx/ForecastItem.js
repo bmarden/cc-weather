@@ -2,11 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Col, Accordion, Container, Row, Card } from 'react-bootstrap';
 import { selectHourById } from './hourlyWxSlice';
-import {
-  convertUnixTime,
-  capitalizeFirstChar,
-  iconMap,
-} from '../../common/utils';
+import { convertUnixTime, capitalizeFirstChar, iconMap } from '../../common/utils';
 import PropTypes from 'prop-types';
 
 const ForecastItem = ({ hourWxId }) => {
@@ -20,15 +16,9 @@ const ForecastItem = ({ hourWxId }) => {
           <Container>
             <Row>
               <Col md="3">
-                <i
-                  className={`icon-hw wi ${
-                    iconMap[hourForecast.weather[0].icon]
-                  }`}
-                />
+                <i className={`icon-hw wi ${iconMap[hourForecast.weather[0].icon]}`} />
                 &nbsp; &nbsp;
-                <span className="hf-title">
-                  {convertUnixTime(hourWxId)}
-                </span>{' '}
+                <span className="hf-title">{convertUnixTime(hourWxId)}</span>{' '}
               </Col>
 
               <Col md="3" className="text-left">

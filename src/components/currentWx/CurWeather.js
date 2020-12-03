@@ -32,11 +32,7 @@ const CurWeather = () => {
         <Card.Title as="h3">Current weather in {curWx.name} </Card.Title>
         <Row>
           <Col md={3}>
-            <i
-              className={`icon-cw-large mb-3 wi ${
-                iconMap[curWx.weather[0].icon]
-              }`}
-            />
+            <i className={`icon-cw-large mb-3 wi ${iconMap[curWx.weather[0].icon]}`} />
             <h3>{curWx.weather[0].main}</h3>
             <h2>{Math.round(curWx.main.temp)} &#176;F</h2>
           </Col>
@@ -49,9 +45,7 @@ const CurWeather = () => {
                 <div>
                   <span>Wind:</span>
                   <div className="icon-wrap">
-                    <i
-                      className={`icon-wind wi wi-wind from-${curWx.wind.deg}-deg`}
-                    ></i>
+                    <i className={`icon-wind wi wi-wind from-${curWx.wind.deg}-deg`}></i>
                   </div>
                   <span>{curWx.wind.speed}</span>
                 </div>
