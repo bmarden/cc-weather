@@ -19,7 +19,7 @@ import TempGraph from '../historicalWx/TempGraph';
 const GraphSelect = () => {
   const dispatch = useDispatch();
   const [stnIndex, setStnIndex] = useState(-1); // Initialize to -1 to control undefined reference on load
-  const [selectedNav, setSelectedNav] = useState('daily');
+  const [interval, setInterval] = useState('daily');
   const search = useSelector((state) => state.search);
   const stations = useSelector((state) => state.histWx.stations);
   const stationsStatus = useSelector((state) => state.histWx.stationsStatus);
@@ -51,7 +51,7 @@ const GraphSelect = () => {
   // Set station and call handleNavSelect to dispatch fetchHistTemp with correct date interval
   const handleStationSelect = (e) => {
     setStnIndex(e.target.value);
-    handleNavSelect(selectedNav);
+    handleNavSelect(interval);
   };
 
   // Set the parameters according to which nav item the user has selected and dispatch
@@ -61,7 +61,7 @@ const GraphSelect = () => {
       sid: stations[stnIndex].sids[0],
       meta: [],
     };
-    setSelectedNav(navItem);
+    setInterval(navItem);
     switch (navItem) {
       case 'daily':
         histParams.elems = ['maxt', 'mint', 'avgt'];
@@ -69,11 +69,6 @@ const GraphSelect = () => {
         histParams.edate = format(new Date(), 'yyyy-MM-dd');
         break;
       case 'monthly':
-        histParams.elems = 'mly_max_maxt,mly_min_mint,mly_mean_avgt';
-        histParams.sdate = format(subMonths(new Date(), 12), 'yyyy-MM');
-        histParams.edate = format(new Date(), 'yyyy-MM');
-        break;
-      case 'yearly':
         histParams.elems = 'mly_max_maxt,mly_min_mint,mly_mean_avgt';
         histParams.sdate = format(subMonths(new Date(), 12), 'yyyy-MM');
         histParams.edate = format(new Date(), 'yyyy-MM');
@@ -135,11 +130,6 @@ const GraphSelect = () => {
           <Nav.Item>
             <Nav.Link eventKey="monthly" href="#monthly">
               By Month
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="yearly" href="#yearly">
-              By Year
             </Nav.Link>
           </Nav.Item>
           <DropdownButton className="ml-auto" title="Stations" as={NavItem}>

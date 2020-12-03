@@ -1,8 +1,14 @@
-import React from 'react';
-import { Jumbotron, Form, Col } from 'react-bootstrap';
+import React, { useState, useRef } from 'react';
+import { format, subMonths } from 'date-fns';
+import { Jumbotron, Form, Col, Button, Row } from 'react-bootstrap';
 import GraphSelect from './GraphSelect';
 
 const Historical = () => {
+  const [startDate, setStartDate] = useState(
+    format(subMonths(new Date(), 12), 'yyyy-MM-dd')
+  );
+  const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+
   return (
     <Jumbotron>
       <h3 className="text-center">Historical Weather</h3>
@@ -20,11 +26,23 @@ const Historical = () => {
         <Form.Row className="justify-content-sm-around">
           <Form.Group as={Col} xs={3}>
             <Form.Label>Start Date</Form.Label>
-            <Form.Control type="date" />
+            <Form.Control
+              type="date"
+              value={startDate}
+              placeholder="Start Date"
+              onChange={(e) => setStartDate(e.target.value)}
+            />
           </Form.Group>
           <Form.Group as={Col} xs={3}>
             <Form.Label>End Date</Form.Label>
-            <Form.Control type="date" placeholder="End Date"></Form.Control>
+            <Form.Control
+              type="date"
+              value={endDate}
+              min={startDate}
+              max={format(new Date(), 'yyyy-MM-dd')}
+              placeholder="End Date"
+              onChange={(e) => setEndDate(e.target.value)}
+            ></Form.Control>
           </Form.Group>
           <Form.Group as={Col} xs={3}>
             <Form.Label>Type</Form.Label>
@@ -37,11 +55,20 @@ const Historical = () => {
               <option value="0">Choose...</option>
               <option value="Temperature">Temperature</option>
               <option value="Precipitation">Precipitation</option>
-              <option value="3">Three</option>
             </Form.Control>
           </Form.Group>
         </Form.Row>
       </Form>
+      <Row className="show-grid">
+        <Button
+          className="ml-auto mr-auto mb-3"
+          variant="success"
+          size="lg"
+          // onClick={handleSubmit}
+        >
+          Submit
+        </Button>
+      </Row>
       <GraphSelect />
     </Jumbotron>
   );
