@@ -14,11 +14,13 @@ import '@reach/combobox/styles.css';
 import { fetchCurWx } from '../currentWx/currentWxSlice';
 import { updatePlace } from './searchSlice';
 import './Search.css';
+import useCurLocation from '../../common/hooks/useCurLocation';
 /* global google */
 
 const Search = () => {
   const dispatch = useDispatch();
   const placeStatus = useSelector((state) => state.search.status);
+  const { location, error } = useCurLocation();
 
   // Initialize options for Autocomplete
   const {
@@ -41,9 +43,12 @@ const Search = () => {
   };
 
   const handleSelect = useCallback(
-    (val) => {
-      setValue(val, false);
-      dispatch(fetchCurWx(val));
+    (val, isCoords) => {
+      if (!isCoords) {
+        console.log(isCoords);
+        setValue(val, false);
+        dispatch(fetchCurWx(val));
+      }
 
       // Get latitude and longitude via utility functions
       getGeocode({ address: val })
@@ -83,8 +88,8 @@ const Search = () => {
 
   // Load initial location on page load
   useEffect(() => {
-    if (placeStatus === 'idle') {
-      handleSelect('San Francisco, CA, USA');
+    if (placeStatus === 'idle' && location) {
+      handleSelect('San Francisco, CA, USA', false);
       setValue('', false);
     }
   }, [handleSelect, placeStatus, setValue]);

@@ -11,12 +11,12 @@ const CurWeather = () => {
   const curWxStatus = useSelector((state) => state.currentWx.status);
   const curWx = useSelector((state) => state.currentWx.curWx);
 
-  // If there isn't any weather loaded, dispatch with default location
-  useEffect(() => {
-    if (curWxStatus === 'idle') {
-      dispatch(fetchCurWx('Chico, CA, USA'));
-    }
-  }, [curWxStatus, dispatch]);
+  // // If there isn't any weather loaded, dispatch with default location
+  // useEffect(() => {
+  //   if (curWxStatus === 'idle') {
+  //     dispatch(fetchCurWx('Chico, CA, USA'));
+  //   }
+  // }, [curWxStatus, dispatch]);
 
   // Display spinner if data is still loading
   let content;
