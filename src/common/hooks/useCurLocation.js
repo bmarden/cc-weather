@@ -13,11 +13,11 @@ const useCurLocation = () => {
   }, []);
 
   const handleSuccess = (pos) => {
-    const { lat, lng } = pos.coords;
+    const { latitude, longitude } = pos.coords;
 
     setLocation({
-      lat,
-      lng,
+      latitude,
+      longitude,
     });
   };
 

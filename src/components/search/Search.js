@@ -44,15 +44,26 @@ const Search = () => {
 
   const handleSelect = useCallback(
     (val, isCoords) => {
-      if (!isCoords) {
-        console.log(isCoords);
+      let geoArg;
+      if (isCoords) {
+        geoArg = {
+          location: {
+            lat: val.latitude,
+            lng: val.longitude,
+          },
+        };
+      } else if (!isCoords) {
         setValue(val, false);
         dispatch(fetchCurWx(val));
+        geoArg = {
+          address: val,
+        };
       }
 
       // Get latitude and longitude via utility functions
-      getGeocode({ address: val })
+      getGeocode(geoArg)
         .then((results) => {
+          console.log(results);
           // Constants used to calculate bounds distance
           const expandDistance = 10 * 1609.34; // Convert 10 miles to meters
           const points = { n: 0, e: 90, s: 180, w: 270 };
@@ -68,9 +79,14 @@ const Search = () => {
               points[i]
             );
           }
+          const geo = results.find((loc) => {
+            return loc.types.some((type) => {
+              return type === 'locality';
+            });
+          });
           // Construct object to update place in Redux store
           const place = {
-            city: results[0].formatted_address,
+            city: geo.formatted_address,
             coords: {
               lat: results[0].geometry.location.lat(),
               lng: results[0].geometry.location.lng(),
@@ -80,7 +96,7 @@ const Search = () => {
           dispatch(updatePlace(place));
         })
         .catch((error) => {
-          console.log('😱 Error: ', error);
+          console.log('Error: ', error);
         });
     },
     [dispatch, setValue]
@@ -88,11 +104,17 @@ const Search = () => {
 
   // Load initial location on page load
   useEffect(() => {
-    if (placeStatus === 'idle' && location) {
-      handleSelect('San Francisco, CA, USA', false);
+    if (location && placeStatus === 'idle') {
+      console.log('Getting user location place');
+      handleSelect(location, true);
       setValue('', false);
     }
-  }, [handleSelect, placeStatus, setValue]);
+    // } else if (placeStatus === 'idle' && !location) {
+    //   console.log('Getting default place');
+    //   handleSelect('San Francisco, CA, USA', false);
+    //   setValue('', false);
+    // }
+  }, [handleSelect, placeStatus, location, setValue]);
 
   const renderSuggestions = () => {
     const suggestions = data.map(({ place_id, description }) => (

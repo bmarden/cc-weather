@@ -7,13 +7,14 @@ const initialState = {
   error: null,
 };
 
-export const fetchCurWx = createAsyncThunk('currentWx/fetchCurWx', async (search) => {
-  const response = await openw.get('/weather', {
+export const fetchCurWx = createAsyncThunk('currentWx/fetchCurWx', async (coords) => {
+  const response = await openw.get('/onecall', {
     params: {
-      q: search,
+      lat: coords.lat,
+      lon: coords.lon,
     },
   });
-  return response.data;
+  return response.data.current;
 });
 
 const currentWxSlice = createSlice({
