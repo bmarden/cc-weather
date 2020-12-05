@@ -11,10 +11,9 @@ import {
 } from '@reach/combobox';
 import '@reach/combobox/styles.css';
 
-import { fetchCurWx } from '../weather/currentWxSlice';
 import { updatePlace } from './searchSlice';
-import './Search.css';
 import useCurLocation from '../../common/hooks/useCurLocation';
+import './Search.css';
 /* global google */
 
 const Search = () => {
@@ -54,7 +53,6 @@ const Search = () => {
         };
       } else if (!isCoords) {
         setValue(val, false);
-        dispatch(fetchCurWx(val));
         geoArg = {
           address: val,
         };

@@ -2,28 +2,28 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row, Card } from 'react-bootstrap';
 import { iconMap } from '../../common/utils';
-import { fetchCurWx } from './currentWxSlice';
+import { fetchWeather } from './weatherSlice';
 import { Ring } from 'react-spinners-css';
-import './CurWeather.css';
+import './Weather.css';
 
 const CurWeather = () => {
   const dispatch = useDispatch();
-  const curWxStatus = useSelector((state) => state.currentWx.status);
+  const weatherStatus = useSelector((state) => state.weather.status);
   const search = useSelector((state) => state.search);
-  const curWx = useSelector((state) => state.currentWx.curWx);
+  const curWx = useSelector((state) => state.weather.curWx);
 
   // If there isn't any weather loaded, dispatch with default location
   useEffect(() => {
     if (search.status === 'loaded') {
       dispatch(
-        fetchCurWx({ lat: search.place.coords.lat, lon: search.place.coords.lng })
+        fetchWeather({ lat: search.place.coords.lat, lon: search.place.coords.lng })
       );
     }
   }, [search, dispatch]);
 
   // Display spinner if data is still loading
   let content;
-  if (curWxStatus === 'loading' || curWxStatus === 'idle') {
+  if (weatherStatus === 'loading' || weatherStatus === 'idle') {
     content = (
       <div className="d-flex justify-content-center">
         <Ring color="#023e8aff">
@@ -31,7 +31,7 @@ const CurWeather = () => {
         </Ring>
       </div>
     );
-  } else if (curWxStatus === 'succeeded') {
+  } else if (weatherStatus === 'succeeded') {
     content = (
       <>
         <Card.Title as="h3">Current weather in {search.place.city} </Card.Title>
@@ -60,7 +60,7 @@ const CurWeather = () => {
         </Row>
       </>
     );
-  } else if (curWxStatus === 'failed') {
+  } else if (weatherStatus === 'failed') {
     content = <p>Error loading content...</p>;
   }
 

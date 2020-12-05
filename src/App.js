@@ -2,9 +2,9 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import CurWeather from './components/currentWx/CurWeather';
+import CurWeather from './components/weather/CurWeather';
 import Navigation from './app/Navigation';
-import HourlyForecast from './components/hourlyWx/HourlyForecast';
+import HourlyForecast from './components/weather/HourlyForecast';
 import Historical from './components/historicalWx/Historical';
 import Footer from './app/Footer';
 import Search from './components/search/Search';
