@@ -105,16 +105,13 @@ const Search = () => {
   // Load initial location on page load
   useEffect(() => {
     if (location && placeStatus === 'idle') {
-      console.log('Getting user location place');
       handleSelect(location, true);
       setValue('', false);
+    } else if (placeStatus === 'idle' && error) {
+      handleSelect('San Francisco, CA, USA', false);
+      setValue('', false);
     }
-    // } else if (placeStatus === 'idle' && !location) {
-    //   console.log('Getting default place');
-    //   handleSelect('San Francisco, CA, USA', false);
-    //   setValue('', false);
-    // }
-  }, [handleSelect, placeStatus, location, setValue]);
+  }, [handleSelect, placeStatus, location, error, setValue]);
 
   const renderSuggestions = () => {
     const suggestions = data.map(({ place_id, description }) => (

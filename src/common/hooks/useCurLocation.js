@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 
+const geoOptions = {
+  timeout: 10 * 10000,
+};
+
 const useCurLocation = () => {
   const [error, setError] = useState();
   const [location, setLocation] = useState();
@@ -9,7 +13,7 @@ const useCurLocation = () => {
       setError('Geolcation not supported.');
       return;
     }
-    navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError, geoOptions);
   }, []);
 
   const handleSuccess = (pos) => {
