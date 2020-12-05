@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { Accordion, Spinner, Col, Jumbotron, Row } from 'react-bootstrap';
+import { Accordion, Col, Jumbotron, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './HourlyForecast.css';
 
 import { fetchHourlyWx, selectAllHours } from './hourlyWxSlice';
 import ForecastItem from './ForecastItem';
+import { Ring } from 'react-spinners-css';
 
 const HourlyForecast = () => {
   const dispatch = useDispatch();
@@ -23,9 +24,11 @@ const HourlyForecast = () => {
 
   if (hourlyWxStatus === 'loading' || hourlyWxStatus === 'idle') {
     content = (
-      <Spinner animation="grow" role="status">
-        <span className="sr-only">Loading...</span>
-      </Spinner>
+      <div className="d-flex justify-content-center">
+        <Ring color="#023e8aff">
+          <span className="sr-only">Loading...</span>
+        </Ring>
+      </div>
     );
   } else if (hourlyWxStatus === 'succeeded') {
     content = hours.map((hourWxId, index) => {

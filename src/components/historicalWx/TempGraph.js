@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Container, Spinner } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import { Ring } from 'react-spinners-css';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -57,9 +58,11 @@ const Historical = () => {
     );
   } else {
     content = (
-      <Spinner animation="grow" role="status">
-        <span className="sr-only">Loading...</span>
-      </Spinner>
+      <div className="d-flex justify-content-center">
+        <Ring color="#023e8aff">
+          <span className="sr-only">Loading...</span>
+        </Ring>
+      </div>
     );
   }
 

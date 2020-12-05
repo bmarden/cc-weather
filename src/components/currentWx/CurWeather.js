@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Col, Row, Spinner, Card } from 'react-bootstrap';
-import { useEffect } from 'react';
+import { Col, Row, Card } from 'react-bootstrap';
 import { iconMap } from '../../common/utils';
-import './CurWeather.css';
 import { fetchCurWx } from '../currentWx/currentWxSlice';
+import { Ring } from 'react-spinners-css';
+import './CurWeather.css';
 
 const CurWeather = () => {
   const dispatch = useDispatch();
@@ -25,9 +25,11 @@ const CurWeather = () => {
   let content;
   if (curWxStatus === 'loading' || curWxStatus === 'idle') {
     content = (
-      <Spinner animation="grow" role="status">
-        <span className="sr-only">Loading...</span>
-      </Spinner>
+      <div className="d-flex justify-content-center">
+        <Ring color="#023e8aff">
+          <span className="sr-only">Loading...</span>
+        </Ring>
+      </div>
     );
   } else if (curWxStatus === 'succeeded') {
     content = (
