@@ -14,7 +14,9 @@ const Navigation = () => {
           <Nav.Link as={NavLink} to="/hourly-weather">
             Hourly Weather
           </Nav.Link>
-          <Nav.Link href="#five-day-forecast">5 day forecast</Nav.Link>
+          <Nav.Link as={NavLink} to="/daily-weather">
+            5 day forecast
+          </Nav.Link>
           <Nav.Link as={NavLink} to="/historical-weather">
             Historical Weather
           </Nav.Link>
