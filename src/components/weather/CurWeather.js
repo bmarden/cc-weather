@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row, Card } from 'react-bootstrap';
 import { iconMap } from '../../common/utils';
-import { fetchCurWx } from '../currentWx/currentWxSlice';
+import { fetchCurWx } from './currentWxSlice';
 import { Ring } from 'react-spinners-css';
 import './CurWeather.css';
 

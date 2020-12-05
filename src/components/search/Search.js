@@ -11,7 +11,7 @@ import {
 } from '@reach/combobox';
 import '@reach/combobox/styles.css';
 
-import { fetchCurWx } from '../currentWx/currentWxSlice';
+import { fetchCurWx } from '../weather/currentWxSlice';
 import { updatePlace } from './searchSlice';
 import './Search.css';
 import useCurLocation from '../../common/hooks/useCurLocation';
