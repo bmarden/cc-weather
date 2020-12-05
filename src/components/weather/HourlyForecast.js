@@ -7,7 +7,6 @@ import ForecastItem from './ForecastItem';
 import './Weather.css';
 
 const HourlyForecast = () => {
-  // const coords = useSelector((state) => state.currentWx.curWx.coord);
   const weatherStatus = useSelector((state) => state.weather.status);
   const hourlyData = useSelector((state) => state.weather.hourlyWx);
 

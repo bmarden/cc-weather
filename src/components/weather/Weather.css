@@ -8,14 +8,15 @@ li {
   padding-bottom: 3px;
 }
 
-.icon-cw .icon-cw-large {
-  line-height: 1.2;
-  padding: 5px;
-  vertical-align: top;
-}
-
 .icon-cw {
   font-size: 2em;
+}
+
+.icon-cw,
+.icon-cw-large {
+  line-height: 0.7 !important;
+  padding: 5px;
+  vertical-align: top !important;
 }
 
 .icon-wrap {
@@ -55,4 +56,8 @@ li {
   font-size: 1.5em;
   line-height: 1.2;
   padding-left: 2px;
+}
+
+.btn-cw {
+  width: 150px;
 }
