@@ -13,7 +13,7 @@ import startCase from 'lodash/fp/startCase';
 import compose from 'lodash/fp/compose';
 import toLower from 'lodash/fp/toLower';
 import { fetchStationData, fetchHistTemp } from './histWxSlice';
-import TempGraph from '../historicalWx/TempGraph';
+import TempGraph from './TempGraph';
 import PropTypes from 'prop-types';
 
 const GraphSelect = ({ chartArgs }) => {

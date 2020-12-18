@@ -5,7 +5,7 @@ import { Ring } from 'react-spinners-css';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 
-const Historical = () => {
+const TempGraph = () => {
   const tempData = useSelector((state) => state.histWx.tempData);
   const tempDataStatus = useSelector((state) => state.histWx.tempDataStatus);
   let options;
@@ -73,4 +73,4 @@ const Historical = () => {
   );
 };
 
-export default Historical;
+export default TempGraph;
