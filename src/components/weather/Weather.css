@@ -52,12 +52,17 @@ li {
 }
 
 .icon-hw {
-  vertical-align: top;
   font-size: 1.5em;
   line-height: 1.2;
   padding-left: 2px;
 }
-
+.icon-hw-attr {
+  font-size: 1.5em;
+  color: #1d1d1d;
+  line-height: 0.7 !important;
+  padding: 5px;
+  vertical-align: top !important;
+}
 .btn-cw {
   width: 150px;
 }

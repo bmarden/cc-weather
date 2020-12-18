@@ -9,8 +9,7 @@ const Welcome = () => {
           <div className="display-4 text-center text-white-50">Welcome to CC Weather</div>
           <p className="text-center text-white-50">
             The goal of CC Weather is to provide accurate weather forecasts while also
-            showing a glimpse into the past to look at how Climate Change may be affecting
-            weather patterns near you.
+            providing an easy way to view historical data.
           </p>
         </Col>
       </Row>

@@ -14,12 +14,12 @@ const CurWeather = () => {
 
   // If there isn't any weather loaded, dispatch with default location
   useEffect(() => {
-    if (search.status === 'loaded') {
+    if (search.status === 'loaded' && weatherStatus !== 'succeeded') {
       dispatch(
         fetchWeather({ lat: search.place.coords.lat, lon: search.place.coords.lng })
       );
     }
-  }, [search, dispatch]);
+  }, [search, weatherStatus, dispatch]);
 
   const renderContent = () => {
     if (weatherStatus === 'loading' || weatherStatus === 'idle') {

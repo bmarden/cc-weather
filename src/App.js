@@ -2,14 +2,13 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import CurWeather from './components/weather/CurWeather';
 import Navigation from './app/Navigation';
 import HourlyForecast from './components/weather/HourlyForecast';
 import Historical from './components/historicalWx/Historical';
 import Footer from './app/Footer';
 import Search from './components/search/Search';
 import About from './components/About';
-import Welcome from './components/Welcome';
+import Home from './components/Home';
 
 import './App.css';
 
@@ -20,16 +19,14 @@ const App = () => {
         <Router>
           <Navigation />
           <Container fluid="lg">
+            <Search />
             <Switch>
               <Route
                 exact
                 path="/"
                 render={() => (
                   <>
-                    <Search />
-                    <Welcome />
-                    <CurWeather />
-                    <Historical />
+                    <Home />
                   </>
                 )}
               />
