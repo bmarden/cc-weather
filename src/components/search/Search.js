@@ -61,7 +61,6 @@ const Search = () => {
       // Get latitude and longitude via utility functions
       getGeocode(geoArg)
         .then((results) => {
-          console.log(results);
           // Constants used to calculate bounds distance
           const expandDistance = 10 * 1609.34; // Convert 10 miles to meters
           const points = { n: 0, e: 90, s: 180, w: 270 };

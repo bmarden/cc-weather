@@ -38,7 +38,7 @@ const ForecastItem = ({ hourWx }) => {
             </Row>
           </Container>
         </Accordion.Toggle>
-        <Accordion.Collapse eventKey={hourWx}>
+        <Accordion.Collapse eventKey={hourWx.dt}>
           <Card.Body>
             <Container>
               <Row>

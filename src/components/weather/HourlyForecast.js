@@ -22,7 +22,7 @@ const HourlyForecast = () => {
     } else if (weatherStatus === 'succeeded') {
       return hourlyData.map((hourWx, index) => {
         if (index < 12) {
-          return <ForecastItem key={index} hourWx={hourWx} />;
+          return <ForecastItem key={hourWx.dt} hourWx={hourWx} />;
         } else return undefined;
       });
     }
@@ -32,7 +32,7 @@ const HourlyForecast = () => {
     <>
       <Jumbotron className="bg-t-dark" id="jumbo-weather">
         <Row>
-          <Col lg="8">
+          <Col>
             <Accordion>{renderContent()}</Accordion>
           </Col>
         </Row>
