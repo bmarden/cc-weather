@@ -9,13 +9,9 @@ const useCurLocation = () => {
       setError('Geolocation not supported.');
       return;
     }
-    let timer = setTimeout(() => {
-      navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
-    }, 10 * 1000);
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
 
-    return () => {
-      clearTimeout(timer);
-    };
+    return () => {};
   }, []);
 
   const handleSuccess = (pos) => {
