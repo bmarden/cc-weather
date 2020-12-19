@@ -33,7 +33,9 @@ const CurWeather = () => {
     } else if (weatherStatus === 'succeeded') {
       return (
         <>
-          <Card.Title as="h3">Current weather in {search.place.city} </Card.Title>
+          <Card.Title className="pb-3" as="h3">
+            Current weather in {search.place.city}{' '}
+          </Card.Title>
           <CurWxItem curWx={curWx} />
         </>
       );
