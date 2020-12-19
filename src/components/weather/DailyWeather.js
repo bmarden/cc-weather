@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Col, Jumbotron, Row } from 'react-bootstrap';
+import { Jumbotron, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ring } from 'react-spinners-css';
 import DailyWxItem from './DailyWxItem';
@@ -38,8 +38,8 @@ const DailyWeather = () => {
     }
   };
   return (
-    <Jumbotron>
-      <h1 className="text-center">5 Day Forecast - {search.place.city}</h1>
+    <Jumbotron className="bg-t-dark">
+      <h1 className="text-center text-white-50">5 Day Forecast - {search.place.city}</h1>
       <Row>{renderContent()}</Row>
     </Jumbotron>
   );
