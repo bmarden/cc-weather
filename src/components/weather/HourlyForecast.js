@@ -44,7 +44,9 @@ const HourlyForecast = () => {
       <Jumbotron className="bg-t-dark" id="jumbo-weather">
         <Row>
           <Col>
-            <h1 className="text-center text-white-50">Hourly Weather Forecast</h1>
+            <h1 className="text-center text-white-50">
+              Hourly Weather Forecast - {search.place.city}
+            </h1>
           </Col>
         </Row>
         <Row>

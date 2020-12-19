@@ -4,6 +4,7 @@ import openw from '../../api/openw';
 const initialState = {
   curWx: [],
   hourlyWx: [],
+  dailyWx: [],
   status: 'idle',
   error: null,
 };
@@ -32,6 +33,7 @@ const currentWxSlice = createSlice({
       // Add any fetched posts to the array
       state.curWx = action.payload.current;
       state.hourlyWx = action.payload.hourly;
+      state.dailyWx = action.payload.daily;
     },
     [fetchWeather.rejected]: (state, action) => {
       state.status = 'failed';

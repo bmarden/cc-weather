@@ -11,6 +11,7 @@ import About from './components/About';
 import Home from './components/Home';
 
 import './App.css';
+import DailyWeather from './components/weather/DailyWeather';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
                 )}
               />
               <Route exact path="/hourly-weather" component={HourlyForecast} />
+              <Route exact path="/daily-weather" component={DailyWeather} />
               <Route exact path="/historical-weather" component={Historical} />
               <Route exact path="/about" component={About} />
             </Switch>
