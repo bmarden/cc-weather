@@ -14,6 +14,7 @@ import '@reach/combobox/styles.css';
 import { updatePlace } from './searchSlice';
 import useCurLocation from '../../common/hooks/useCurLocation';
 import './Search.css';
+import { fetchWeather } from '../weather/weatherSlice';
 /* global google */
 
 const Search = () => {
@@ -91,6 +92,7 @@ const Search = () => {
             bounds: `${points.w.lng()},${points.s.lat()},${points.e.lng()}, ${points.n.lat()}`,
           };
           dispatch(updatePlace(place));
+          dispatch(fetchWeather({ lat: place.coords.lat, lon: place.coords.lng }));
         })
         .catch((error) => {
           console.log('Error: ', error);

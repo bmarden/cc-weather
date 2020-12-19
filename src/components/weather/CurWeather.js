@@ -1,25 +1,14 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Card } from 'react-bootstrap';
-import { fetchWeather } from './weatherSlice';
 import { Ring } from 'react-spinners-css';
 import './Weather.css';
 import CurWxItem from './CurWxItem';
 
 const CurWeather = () => {
-  const dispatch = useDispatch();
   const weatherStatus = useSelector((state) => state.weather.status);
   const search = useSelector((state) => state.search);
   const curWx = useSelector((state) => state.weather.curWx);
-
-  // If there isn't any weather loaded, dispatch with default location
-  useEffect(() => {
-    if (search.status === 'loaded' && weatherStatus !== 'succeeded') {
-      dispatch(
-        fetchWeather({ lat: search.place.coords.lat, lon: search.place.coords.lng })
-      );
-    }
-  }, [search, weatherStatus, dispatch]);
 
   const renderContent = () => {
     if (weatherStatus === 'loading' || weatherStatus === 'idle') {

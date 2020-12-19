@@ -1,24 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Jumbotron, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Ring } from 'react-spinners-css';
 import DailyWxItem from './DailyWxItem';
 
-import { fetchWeather } from './weatherSlice';
-
 const DailyWeather = () => {
-  const dispatch = useDispatch();
   const weatherStatus = useSelector((state) => state.weather.status);
   const dailyForecast = useSelector((state) => state.weather.dailyWx);
   const search = useSelector((state) => state.search);
-
-  useEffect(() => {
-    if (search.status === 'loaded' && weatherStatus !== 'succeeded') {
-      dispatch(
-        fetchWeather({ lat: search.place.coords.lat, lon: search.place.coords.lng })
-      );
-    }
-  }, [search, weatherStatus, dispatch]);
 
   const renderContent = () => {
     if (weatherStatus === 'loading' || weatherStatus === 'idle') {
