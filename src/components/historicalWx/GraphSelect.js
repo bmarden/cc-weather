@@ -12,13 +12,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import startCase from 'lodash/fp/startCase';
 import compose from 'lodash/fp/compose';
 import toLower from 'lodash/fp/toLower';
-import { fetchStationData, fetchHistTemp } from './histWxSlice';
+import { fetchStationData, fetchHistData } from './histWxSlice';
 import TempGraph from './TempGraph';
 import PropTypes from 'prop-types';
+import PrecipGraph from './PrecipGraph';
 
 const GraphSelect = ({ chartArgs }) => {
   const dispatch = useDispatch();
-  const [stnIndex, setStnIndex] = useState(-1); // Initialize to -1 to control undefined reference on load
+  const [stnIndex, setStnIndex] = useState(0); // Initialize to -1 to control undefined reference on load
   const [interval, setInterval] = useState('daily');
   const search = useSelector((state) => state.search);
   const stations = useSelector((state) => state.histWx.stations);
@@ -28,51 +29,65 @@ const GraphSelect = ({ chartArgs }) => {
   // to get station data
   useEffect(() => {
     if (search.status === 'loaded') {
-      dispatch(fetchStationData(search.place.bounds));
-    }
-  }, [search, dispatch]);
+      let stationArgs = {
+        bbox: search.place.bounds,
+        meta: ['name', 'sids', 'uid', 'valid_daterange', 'll', 'elev', 'sid_dates'],
+        sdate: '1970-01-01',
+        edate: chartArgs.endDate,
+      };
 
-  /* Dispatch for historical data by day */
+      // Based on chartType set in Historical component, query stations with the relevant data
+      if (chartArgs.chartType === 'Temperature') {
+        stationArgs.elems = ['maxt', 'mint', 'avgt'];
+      } else if (chartArgs.chartType === 'Precipitation') {
+        stationArgs.elems = ['pcpn'];
+      }
+      dispatch(fetchStationData(stationArgs));
+    }
+  }, [search, chartArgs.endDate, chartArgs.chartType, dispatch]);
+
+  /* 
+    Determines when to update the chart
+    Will update under the following conditions:
+    - Initial load or when chartArgs change - start/end date or chart type
+    - Change in the interval - By Day / By Month
+    - Change in the station selected
+    Builds the chart arguments based upon currently active options  
+  */
   useEffect(() => {
     if (stationsStatus === 'succeeded') {
       // Set station to the first in the list
-      setStnIndex(0);
-      let histParams = {
-        sid: stations[0].sids[0],
-        sdate: chartArgs.startDate,
-        edate: chartArgs.endDate,
-        elems: ['maxt', 'mint', 'avgt'],
+      // setStnIndex(0);
+
+      let histArgs = {
+        sid: stations[stnIndex].sids[0], // stnIndex will hold the most recent station selected by the user
+        sdate: chartArgs.startDate, // From parent component
+        edate: chartArgs.endDate, // From parent component
         meta: [],
       };
-      dispatch(fetchHistTemp(histParams));
-    }
-  }, [stationsStatus, stations, chartArgs.startDate, chartArgs.endDate, dispatch]);
+      // Set elems object based on selected interval
+      if (interval === 'daily') {
+        if (chartArgs.chartType === 'Temperature') {
+          histArgs.elems = ['maxt', 'mint', 'avgt'];
+        } else if (chartArgs.chartType === 'Precipitation') {
+          histArgs.elems = ['pcpn'];
+        }
+      } else if (interval === 'monthly') {
+        if (chartArgs.chartType === 'Temperature') {
+          histArgs.elems = 'mly_max_maxt,mly_min_mint,mly_mean_avgt';
+        } else if (chartArgs.chartType) {
+          histArgs.elems = 'mly_sum_pcpn';
+        }
+      }
 
-  // Set station and call handleNavSelect to dispatch fetchHistTemp with correct date interval
-  const handleStationSelect = (e) => {
-    setStnIndex(e.target.value);
-    handleChartUpdate(interval);
-  };
-
-  // Update the chart data when the user changes the station used or when they change the interval
-  // between data points
-  const handleChartUpdate = async (interval) => {
-    // Update interval state
-    setInterval(interval);
-    // Build the params for API
-    let histParams = {
-      sid: stations[stnIndex].sids[0], // stnIndex will hold the most recent station selected by the user
-      sdate: chartArgs.startDate, // From parent component
-      edate: chartArgs.endDate, // From parent component
-      meta: [],
-    };
-    // Set elems object based on selected interval
-    if (interval === 'daily') {
-      histParams.elems = ['maxt', 'mint', 'avgt'];
-    } else if (interval === 'monthly') {
-      histParams.elems = 'mly_max_maxt,mly_min_mint,mly_mean_avgt';
+      dispatch(fetchHistData(histArgs));
     }
-    dispatch(fetchHistTemp(histParams));
+  }, [stationsStatus, stations, interval, stnIndex, chartArgs, dispatch]);
+
+  // Update the interval when changing interval (By Day/By Month)
+  const handleIntervalChange = (eventKey, event) => {
+    event.persist();
+    setInterval(eventKey);
   };
 
   // Display a tooltip on each station with details
@@ -100,7 +115,7 @@ const GraphSelect = ({ chartArgs }) => {
             as="button"
             key={stn.uid}
             value={index}
-            onClick={handleStationSelect}
+            onClick={(e) => setStnIndex(e.target.value)}
           >
             {compose(startCase, toLower)(stn.name)}
           </Dropdown.Item>
@@ -113,7 +128,7 @@ const GraphSelect = ({ chartArgs }) => {
   return (
     <Card>
       <Card.Header>
-        <Nav variant="pills" defaultActiveKey="daily" onSelect={handleChartUpdate}>
+        <Nav variant="pills" defaultActiveKey="daily" onSelect={handleIntervalChange}>
           <Nav.Item>
             <Nav.Link eventKey="daily" href="#daily">
               By Day
@@ -132,9 +147,11 @@ const GraphSelect = ({ chartArgs }) => {
       <Card.Body>
         <Card.Title>
           <strong>Weather Station:</strong>{' '}
-          {stnIndex !== -1 ? compose(startCase, toLower)(stations[stnIndex].name) : ''}{' '}
+          {stationsStatus === 'succeeded'
+            ? compose(startCase, toLower)(stations[stnIndex].name)
+            : ''}{' '}
         </Card.Title>
-        <TempGraph />
+        {chartArgs.chartType === 'Temperature' ? <TempGraph /> : <PrecipGraph />}
       </Card.Body>
     </Card>
   );

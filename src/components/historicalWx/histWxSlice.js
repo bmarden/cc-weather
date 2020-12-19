@@ -22,26 +22,16 @@ export const fetchStationData = createAsyncThunk(
   'histWx/fetchStationData',
   async (args) => {
     let form = new FormData();
-    form.append('bbox', `${args}`);
-    form.append('meta', [
-      'name',
-      'sids',
-      'uid',
-      'valid_daterange',
-      'll',
-      'elev',
-      'sid_dates',
-    ]);
-    form.append('elems', ['maxt', 'mint']);
-    form.append('sdate', '1970-01-01');
-    form.append('edate', format(new Date(), 'yyyy-MM-dd'));
+    for (let [key, value] of Object.entries(args)) {
+      form.append(key, value);
+    }
     const response = await acis.post('/StnMeta', form);
     return response.data;
   }
 );
 
-export const fetchHistTemp = createAsyncThunk(
-  'histWx/fetchHistTemp',
+export const fetchHistData = createAsyncThunk(
+  'histWx/fetchHistData',
   async (histParams) => {
     let form = new FormData();
     for (let [key, value] of Object.entries(histParams)) {
@@ -107,10 +97,10 @@ const histWxSlice = createSlice({
       state.stationsStatus = 'failed';
       state.stationsError = action.error.message;
     },
-    [fetchHistTemp.pending]: (state, action) => {
+    [fetchHistData.pending]: (state, action) => {
       state.tempDataStatus = 'loading';
     },
-    [fetchHistTemp.fulfilled]: (state, action) => {
+    [fetchHistData.fulfilled]: (state, action) => {
       state.tempDataStatus = 'succeeded';
       let filtered = _.chain(action.payload.data)
         .filter((i) => !i.includes('M')) // Filter out dates with missing data
@@ -119,7 +109,7 @@ const histWxSlice = createSlice({
         .value();
       state.tempData = filtered;
     },
-    [fetchHistTemp.rejected]: (state, action) => {
+    [fetchHistData.rejected]: (state, action) => {
       state.tempDataStatus = 'failed';
       state.tempDataError = action.error.message;
     },

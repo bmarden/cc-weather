@@ -6,10 +6,13 @@ import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 
 const PrecipGraph = () => {
-  const precipDataStatus = useSelector((state) => state.precipDataStatus);
+  const data = useSelector((state) => state.histWx.tempData);
+  const dataStatus = useSelector((state) => state.histWx.tempDataStatus);
+
   let options;
   let content;
-  if (precipDataStatus === 'succeeded') {
+  if (dataStatus === 'succeeded') {
+    const pcpnData = data[0];
     options = {
       title: {
         text: 'Precipitation Chart',
@@ -25,7 +28,12 @@ const PrecipGraph = () => {
           text: 'Precipitation in inches',
         },
       },
-      series: [{}],
+      series: [
+        {
+          name: 'Precipitation Data',
+          data: pcpnData,
+        },
+      ],
     };
     content = (
       <HighchartsReact

@@ -12,7 +12,7 @@ const Historical = () => {
   const [chartArgs, setChartArgs] = useState({
     startDate: startDate,
     endDate: endDate,
-    chartType: '',
+    chartType: 'Temperature',
   });
 
   const handleSubmit = (e) => {
@@ -62,7 +62,6 @@ const Historical = () => {
               onChange={(e) => setChartType(e.target.value)}
               custom
             >
-              <option value="0">Choose...</option>
               <option value="Temperature">Temperature</option>
               <option value="Precipitation">Precipitation</option>
             </Form.Control>
