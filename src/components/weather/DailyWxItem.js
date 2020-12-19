@@ -33,7 +33,7 @@ const DailyWxItem = ({ dailyWx }) => {
               </span>
             </Col>
           </Row>
-          <Row>
+          <Row className="pb-2">
             <Col>
               <OverlayTrigger overlay={<Tooltip>Precipitation chance</Tooltip>}>
                 <i className="wi wi-raindrops icon-hw-attr"></i>
@@ -45,6 +45,34 @@ const DailyWxItem = ({ dailyWx }) => {
                 <i className="wi wi-hot icon-hw-attr"></i>
               </OverlayTrigger>
               <span className="hf-val">{dailyWx.uvi}</span>
+            </Col>
+          </Row>
+          <Row className="pb-2">
+            <Col>
+              <OverlayTrigger overlay={<Tooltip>Wind Direction</Tooltip>}>
+                <i className={`icon-hw-attr wi wi-wind from-${dailyWx.wind_deg}-deg`}></i>
+              </OverlayTrigger>
+              <span className="hf-val">{dailyWx.wind_deg}</span>
+            </Col>
+            <Col>
+              <OverlayTrigger overlay={<Tooltip>Wind Speed</Tooltip>}>
+                <i className="icon-hw-attr wi wi-strong-wind"></i>
+              </OverlayTrigger>
+              <span className="hf-val">{dailyWx.wind_speed}</span>
+            </Col>
+          </Row>
+          <Row className="pb-2">
+            <Col>
+              <OverlayTrigger overlay={<Tooltip>Humidity</Tooltip>}>
+                <i className="wi wi-humidity icon-hw-attr"></i>
+              </OverlayTrigger>
+              <span>{dailyWx.humidity} %</span>
+            </Col>
+            <Col>
+              <OverlayTrigger overlay={<Tooltip>Dew Point</Tooltip>}>
+                <i className="wi wi-raindrop icon-hw-attr"></i>
+              </OverlayTrigger>
+              <span>{dailyWx.dew_point} &#176;</span>
             </Col>
           </Row>
         </Card.Body>
