@@ -55,10 +55,8 @@ const GraphSelect = ({ chartArgs }) => {
     Builds the chart arguments based upon currently active options  
   */
   useEffect(() => {
+    // Only update if we have station data
     if (stationsStatus === 'succeeded') {
-      // Set station to the first in the list
-      // setStnIndex(0);
-
       let histArgs = {
         sid: stations[stnIndex].sids[0], // stnIndex will hold the most recent station selected by the user
         sdate: chartArgs.startDate, // From parent component
