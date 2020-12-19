@@ -56,7 +56,7 @@ const GraphSelect = ({ chartArgs }) => {
   */
   useEffect(() => {
     // Only update if we have station data
-    if (stationsStatus === 'succeeded') {
+    if (stations.length !== 0 && stationsStatus === 'succeeded') {
       let histArgs = {
         sid: stations[stnIndex].sids[0], // stnIndex will hold the most recent station selected by the user
         sdate: chartArgs.startDate, // From parent component

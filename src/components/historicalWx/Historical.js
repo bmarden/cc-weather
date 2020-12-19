@@ -8,7 +8,7 @@ const Historical = () => {
     format(subMonths(new Date(), 12), 'yyyy-MM-dd')
   );
   const [endDate, setEndDate] = useState(format(new Date(), 'yyyy-MM-dd'));
-  const [chartType, setChartType] = useState('');
+  const [chartType, setChartType] = useState('Temperature');
   const [chartArgs, setChartArgs] = useState({
     startDate: startDate,
     endDate: endDate,
