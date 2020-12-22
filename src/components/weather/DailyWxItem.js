@@ -25,11 +25,11 @@ const DailyWxItem = ({ dailyWx }) => {
               <OverlayTrigger overlay={<Tooltip>Temperature</Tooltip>}>
                 <i className="wi wi-thermometer icon-hw-attr"></i>
               </OverlayTrigger>
-              <span className="hf-val" style={{ color: '#0000ca' }}>
-                Low: {Math.round(dailyWx.temp.min)}&#176;F &nbsp;
-              </span>
               <span className="hf-val" style={{ color: '#d30402' }}>
                 High: {Math.round(dailyWx.temp.max)}&#176;F{' '}
+              </span>
+              <span className="hf-val" style={{ color: '#0000ca' }}>
+                Low: {Math.round(dailyWx.temp.min)}&#176;F &nbsp;
               </span>
             </Col>
           </Row>
@@ -38,7 +38,7 @@ const DailyWxItem = ({ dailyWx }) => {
               <OverlayTrigger overlay={<Tooltip>Precipitation chance</Tooltip>}>
                 <i className="wi wi-raindrops icon-hw-attr"></i>
               </OverlayTrigger>
-              <span className="hf-val">{dailyWx.pop * 100}%</span>
+              <span className="hf-val">{Math.round(dailyWx.pop * 100)}%</span>
             </Col>
             <Col>
               <OverlayTrigger overlay={<Tooltip>UV Index</Tooltip>}>
