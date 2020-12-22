@@ -26,10 +26,10 @@ const DailyWxItem = ({ dailyWx }) => {
                 <i className="wi wi-thermometer icon-hw-attr"></i>
               </OverlayTrigger>
               <span className="hf-val" style={{ color: '#0000ca' }}>
-                Min: {Math.round(dailyWx.temp.min)}&#176;F &nbsp;
+                Low: {Math.round(dailyWx.temp.min)}&#176;F &nbsp;
               </span>
               <span className="hf-val" style={{ color: '#d30402' }}>
-                Max: {Math.round(dailyWx.temp.max)}&#176;F{' '}
+                High: {Math.round(dailyWx.temp.max)}&#176;F{' '}
               </span>
             </Col>
           </Row>
@@ -38,13 +38,13 @@ const DailyWxItem = ({ dailyWx }) => {
               <OverlayTrigger overlay={<Tooltip>Precipitation chance</Tooltip>}>
                 <i className="wi wi-raindrops icon-hw-attr"></i>
               </OverlayTrigger>
-              <span className="hf-val">{dailyWx.pop} %</span>
+              <span className="hf-val">{dailyWx.pop * 100}%</span>
             </Col>
             <Col>
               <OverlayTrigger overlay={<Tooltip>UV Index</Tooltip>}>
                 <i className="wi wi-hot icon-hw-attr"></i>
               </OverlayTrigger>
-              <span className="hf-val">{dailyWx.uvi}</span>
+              <span className="hf-val">{dailyWx.uvi.toFixed(1)}</span>
             </Col>
           </Row>
           <Row className="pb-2">
@@ -66,13 +66,13 @@ const DailyWxItem = ({ dailyWx }) => {
               <OverlayTrigger overlay={<Tooltip>Humidity</Tooltip>}>
                 <i className="wi wi-humidity icon-hw-attr"></i>
               </OverlayTrigger>
-              <span>{dailyWx.humidity} %</span>
+              <span>{dailyWx.humidity}%</span>
             </Col>
             <Col>
               <OverlayTrigger overlay={<Tooltip>Dew Point</Tooltip>}>
                 <i className="wi wi-raindrop icon-hw-attr"></i>
               </OverlayTrigger>
-              <span>{dailyWx.dew_point} &#176;</span>
+              <span>{dailyWx.dew_point}&#176;</span>
             </Col>
           </Row>
         </Card.Body>
