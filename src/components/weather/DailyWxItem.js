@@ -26,10 +26,10 @@ const DailyWxItem = ({ dailyWx }) => {
                 <i className="wi wi-thermometer icon-hw-attr"></i>
               </OverlayTrigger>
               <span className="hf-val" style={{ color: '#d30402' }}>
-                High: {Math.round(dailyWx.temp.max)}&#176;F{' '}
+                High: {Math.round(dailyWx.temp.max)}&#176;F&nbsp;
               </span>
               <span className="hf-val" style={{ color: '#0000ca' }}>
-                Low: {Math.round(dailyWx.temp.min)}&#176;F &nbsp;
+                Low: {Math.round(dailyWx.temp.min)}&#176;F
               </span>
             </Col>
           </Row>
