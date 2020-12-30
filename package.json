@@ -23,15 +23,15 @@
     "react-places-autocomplete": "^7.3.0",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.4",
+    "react-scripts": "4.0.1",
     "react-spinners-css": "^1.2.2",
     "use-places-autocomplete": "^1.6.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
     "lint": "eslint './src/**/*.js' --max-warnings 5"
   },
   "eslintConfig": {
@@ -50,10 +50,14 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^6.0.0",
+    "@semantic-ui-react/craco-less": "^1.2.1",
     "@types/react": "^16.9.56",
     "eslint-config-prettier": "^6.15.0",
     "eslint-config-react": "^1.1.7",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "semantic-ui-less": "^2.4.1",
+    "semantic-ui-react": "^2.0.1"
   }
 }
