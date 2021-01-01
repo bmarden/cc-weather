@@ -5,6 +5,7 @@ import store from './app/store';
 import App from './App';
 import './custom.scss';
 import './index.css';
+import 'semantic-ui-less/semantic.less';
 
 ReactDOM.render(
   <Provider store={store}>
