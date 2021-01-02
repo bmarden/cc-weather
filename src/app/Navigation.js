@@ -1,41 +1,77 @@
-import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import ccweather from '../assets/cc-weather.png';
+import './NavBar.css';
+import {
+  Button,
+  Container,
+  Dropdown,
+  Grid,
+  Header,
+  Icon,
+  Menu,
+  Message,
+  Image,
+} from 'semantic-ui-react';
 
 const Navigation = () => {
+  const [menuStyle, setMenuStyle] = useState({ display: 'none' });
+
+  const handleToggleDropdownMenu = () => {
+    if (menuStyle.display === 'none') {
+      setMenuStyle({ display: 'block' });
+    } else {
+      setMenuStyle({ display: 'none' });
+    }
+  };
   return (
-    <Navbar collapseOnSelect bg="#000046" variant="dark" expand="lg">
-      <Navbar.Brand as={NavLink} to="/">
-        <img
-          src={ccweather}
-          className="d-inline-block align-top"
-          alt="cc-weather"
-          width="40"
-          height="40"
-        />
-      </Navbar.Brand>
-      <Navbar.Brand as={NavLink} to="/">
-        CC Weather
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link as={NavLink} to="/hourly-weather">
+    <Container>
+      <Grid padded className="tablet computer only">
+        <Menu borderless fluid>
+          <Menu.Item>
+            <Image size="mini" src={ccweather} />
+          </Menu.Item>
+          <Menu.Item header as={Link} to="/">
+            CC Weather
+          </Menu.Item>
+          <Menu.Item as={NavLink} to="/hourly-weather">
             Hourly Weather
-          </Nav.Link>
-          <Nav.Link as={NavLink} to="/daily-weather">
-            5 day forecast
-          </Nav.Link>
-          <Nav.Link as={NavLink} to="/historical-weather">
+          </Menu.Item>
+          <Menu.Item as={NavLink} to="/daily-weather">
+            Daily Weather
+          </Menu.Item>
+          <Menu.Item as={NavLink} to="/historical-weather">
             Historical Weather
-          </Nav.Link>
-          <Nav.Link as={NavLink} to="/about">
-            About
-          </Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+          </Menu.Item>
+        </Menu>
+      </Grid>
+
+      <Grid padded className="mobile only">
+        <Menu borderless fluid>
+          <Menu.Item header as={Link} to="/">
+            CC Weather
+          </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item>
+              <Button icon basic toggle onClick={handleToggleDropdownMenu}>
+                <Icon name="content" />
+              </Button>
+            </Menu.Item>
+          </Menu.Menu>
+          <Menu vertical borderless fluid style={menuStyle}>
+            <Menu.Item as={NavLink} to="/hourly-weather">
+              Hourly Weather
+            </Menu.Item>
+            <Menu.Item as={NavLink} to="daily-weather">
+              Daily Weather
+            </Menu.Item>
+            <Menu.Item as={NavLink} to="historical-weather">
+              Historical Weather
+            </Menu.Item>
+          </Menu>
+        </Menu>
+      </Grid>
+    </Container>
   );
 };
 
