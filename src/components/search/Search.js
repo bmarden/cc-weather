@@ -77,9 +77,10 @@ const Search = () => {
               points[i]
             );
           }
+          console.log(results);
           const geo = results.find((loc) => {
             return loc.types.some((type) => {
-              return type === 'locality';
+              return type === 'locality' || type === 'postal_code';
             });
           });
           // Construct object to update place in Redux store
