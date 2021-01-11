@@ -42,6 +42,12 @@ const Search = () => {
     setValue(e.target.value);
   };
 
+  /**  handleSelect - Handles when a location is selected from Google AutoComplete 
+  @val - Can have two values based on context of the call. If selection made from autocompplete dropdown
+         then this will be a city address: Cityname, State, USA. If page is initially loading, this will be an
+         object holding a latitude longitude.
+  @isCoords - If true, then val is a lat lng object. If false or undefined then val is a string containing the city address
+  **/
   const handleSelect = useCallback(
     (val, isCoords) => {
       let geoArg;
@@ -77,7 +83,6 @@ const Search = () => {
               points[i]
             );
           }
-          console.log(results);
           const geo = results.find((loc) => {
             return loc.types.some((type) => {
               return type === 'locality' || type === 'postal_code';
